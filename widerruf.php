@@ -10,7 +10,7 @@
   <h1 class="mb-4">Widerrufsbelehrung</h1>
   <div class="card p-4">
     <p><strong>Widerrufsrecht</strong><br>Sie haben das Recht, binnen vierzehn Tagen ohne Angabe von Gründen diesen Vertrag zu widerrufen. Die Widerrufsfrist beträgt vierzehn Tage ab dem Tag des Vertragsabschlusses.</p>
-    <p>Um Ihr Widerrufsrecht auszuüben, müssen Sie uns (PROPERTEE Real Estate GmbH, Bomhardstraße 7, 82031 Grünwald, Telefon +49 (0)89 / 945 089 56-0, E-Mail <a href="mailto:info@propertee.de">info@propertee.de</a>) mittels einer eindeutigen Erklärung (z. B. ein mit der Post versandter Brief oder E‑Mail) über Ihren Entschluss, diesen Vertrag zu widerrufen, informieren.</p>
+    <p>Um Ihr Widerrufsrecht auszuüben, müssen Sie uns (PROPERTEE Real Estate GmbH, Bomhardstraße 7, 82031 Grünwald, Telefon +49 (0)89 / 945 089 56-0, E-Mail <a href="mailto:info@propertee.de">info@propertee.de</a>) mittels einer eindeutigen Erklärung (z. B. ein mit der Post versandter Brief oder E-Mail) über Ihren Entschluss, diesen Vertrag zu widerrufen, informieren.</p>
     <p>Zur Wahrung der Frist reicht es aus, dass Sie die Mitteilung über die Ausübung des Widerrufsrechts vor Ablauf der Widerrufsfrist absenden.</p>
     <h5 class="mt-3">Folgen des Widerrufs</h5>
     <p>Wenn Sie diesen Vertrag widerrufen, haben wir Ihnen alle Zahlungen, die wir von Ihnen erhalten haben, unverzüglich und spätestens binnen vierzehn Tagen ab dem Tag zurückzuzahlen, an dem die Mitteilung über Ihren Widerruf bei uns eingegangen ist. Für diese Rückzahlung verwenden wir dasselbe Zahlungsmittel, das Sie bei der ursprünglichen Transaktion eingesetzt haben, es sei denn, mit Ihnen wurde ausdrücklich etwas anderes vereinbart.</p>

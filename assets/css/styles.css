@@ -14,13 +14,11 @@ body { background:#fff; color:var(--bd-dark); }
 .badge-soft { background:#fff; border:1px solid #eee; padding:.35rem .6rem; border-radius:999px; color:#64748b; font-weight:600; }
 .card { border-radius:14px; }
 .usp .card { border:1px solid #ececec; }
-
-/* Inputs with icons */
 .input-icon { position:relative; }
 .input-icon .bi { position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#9ca3af; }
 .input-icon input, .input-icon textarea { padding-left:40px !important; }
 
-/* Friendly modal design */
+/* Modal friendly design */
 .modal-content { border-radius:20px; border:1px solid #eee; box-shadow:0 10px 40px rgba(16,24,40,.12); }
 .modal-header { border-bottom:1px solid #f2f2f2; }
 .stepper{display:flex; gap:10px; margin-bottom:18px; flex-wrap:wrap}
@@ -41,13 +39,13 @@ body { background:#fff; color:var(--bd-dark); }
 .summary .item{display:flex; justify-content:space-between; gap:12px; border-bottom:1px dashed #eef0f4; padding:8px 0}
 .summary .item:last-child{border-bottom:0}
 
+/* Address step */
+.addr-grid .form-control, .addr-grid .form-select { border-radius: 12px; }
+.addr-grid .help { color: #64748b; font-size: .9rem; }
+.addr-grid .ok { color: #16a34a; }
+.addr-grid .bad { color: #dc2626; }
+
 /* Footer */
 .footer-dark{ background:#0b1220; color:#cbd5e1; }
 .footer-dark a{ color:#e2e8f0; text-decoration:none }
 .footer-dark a:hover{ text-decoration:underline }
-
-/* Address validation styling */
-.advice{color:#6b7280; font-size:.9rem}
-.validation-msg{font-size:.9rem}
-.valid .form-control{border-color:#22c55e}
-.invalid .form-control{border-color:#ef4444}

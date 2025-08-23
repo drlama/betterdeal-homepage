@@ -1,8 +1,8 @@
-// BetterDeal landing + enhanced 5-step wizard (corrected MFH logic)
+// BetterDeal – Landing + Wizard
 (function() {
   const modalEl = document.getElementById('preisrechnerModal');
   const modal = new bootstrap.Modal(modalEl);
-  const openButtons = [document.getElementById('btnPreisrechner'), document.getElementById('btnPreisrechnerHero')].filter(Boolean);
+  const openButtons = [document.getElementById('btnPreisrechnerHero')].filter(Boolean);
   openButtons.forEach(btn => btn.addEventListener('click', () => { resetWizard(); modal.show(); }));
 
   // Contact form AJAX
@@ -89,7 +89,6 @@
     const isMFH = art === 'mehrfamilienhaus';
     const isWhg = art === 'wohnung';
 
-    // Step 3 heading
     if (basisHeading) {
       if (isMFH) basisHeading.textContent = 'Mehrfamilienhaus-Spezifikation';
       else if (isHaus) basisHeading.textContent = 'Haus-Spezifikation';
@@ -97,7 +96,6 @@
       else basisHeading.textContent = 'Basisdaten';
     }
 
-    // Step 3 fields
     show('fieldGrundstueck', isHaus);
     setRequired('b_grundstueck', isHaus);
 
@@ -110,7 +108,6 @@
     show('fieldWohnflaeche', !isMFH);
     setRequired('b_wohnflaeche', !isMFH);
 
-    // Step 4 blocks
     document.getElementById('ausstattungWhgHaus').classList.toggle('d-none', isMFH);
     document.getElementById('ausstattungMFH').classList.toggle('d-none', !isMFH);
   }
@@ -162,7 +159,10 @@
       }
     });
     localStorage.setItem(LS_KEY, JSON.stringify(data));
-    autosaveInfo && (autosaveInfo.classList.remove('d-none'), setTimeout(() => autosaveInfo.classList.add('d-none'), 900));
+    if (document.getElementById('autosaveInfo')) {
+      const ai = document.getElementById('autosaveInfo');
+      ai.classList.remove('d-none'); setTimeout(() => ai.classList.add('d-none'), 900);
+    }
   }
 
   function renderSummary() {
@@ -190,7 +190,6 @@
       if (art === 'haus') Object.assign(finalLabels, labelsHausOnly);
     }
 
-    // collect values
     const data = {};
     Object.keys(finalLabels).forEach(k => data[k] = getValue(k));
 
@@ -206,9 +205,7 @@
 
   if (btnWeiter) btnWeiter.addEventListener('click', () => {
     if (step === 1) {
-      const adr = form.elements['adresse'];
-      if (!adr.value.trim()) { adr.classList.add('is-invalid'); adr.focus(); return; }
-      adr.classList.remove('is-invalid');
+      // Locked via address flow; just advance
       setStep(2); return;
     }
     if (step === 2) {
@@ -218,7 +215,6 @@
       setStep(3); return;
     }
     if (step === 3) {
-      // requireds are set via toggleTypeFields
       if (!form.checkValidity()) { form.classList.add('was-validated'); return; }
       setStep(4); return;
     }
@@ -244,53 +240,101 @@
       if (data.ok) { new bootstrap.Toast(document.getElementById('toastSuccess')).show(); modal.hide(); localStorage.removeItem(LS_KEY); }
       else { alert('Fehler: ' + (data.error || 'Unbekannt')); }
     } catch (e) { alert('Netzwerkfehler: ' + e.message); }
-    finally { document.querySelectorAll('[data-required-was="1"]').forEach(el => { el.required=true; delete el.dataset.requiredWas; }); }
   });
 
+  // ---- Step 1: PLZ -> Ort -> Straße -> Hausnummer (OpenPLZ) ----
+  const adr = {
+    plz: form ? document.getElementById('adr_plz') : null,
+    ort: form ? document.getElementById('adr_ort') : null,
+    str: form ? document.getElementById('adr_strasse') : null,
+    hnr: form ? document.getElementById('adr_hnr') : null,
+    full: form ? document.getElementById('adresse') : null,
+    status: document.getElementById('adr_status')
+  };
+  let adrReady = false; // controls Weiter in step 1
 
-  // ---- Address live validation ----
-  const adrInput = form ? form.elements['adresse'] : null;
-  let adrValid = false, adrTimer = null;
-
-  async function validateAddress() {
-    if (!adrInput) return;
-    const v = adrInput.value.trim();
-    const msg = document.getElementById('adrMsg');
-    const wrapper = adrInput.closest('.input-icon')?.parentElement || adrInput.parentElement;
-    if (v.length < 6) { adrValid = false; wrapper?.classList.remove('valid','invalid'); msg.textContent=''; return; }
-    try {
-      const fd = new FormData(); fd.append('adresse', v);
-      const res = await fetch('api/validate_address.php', { method:'POST', headers:{'X-CSRF-Token': CSRF_TOKEN}, body: fd });
-      const data = await res.json();
-      if (data.ok) {
-        adrValid = true;
-        wrapper?.classList.add('valid'); wrapper?.classList.remove('invalid');
-        msg.innerHTML = '<span class="text-success"><i class="bi bi-check-circle me-1"></i>Adresse plausibel</span>';
-      } else {
-        adrValid = false;
-        wrapper?.classList.add('invalid'); wrapper?.classList.remove('valid');
-        msg.innerHTML = '<span class="text-danger"><i class="bi bi-x-circle me-1"></i>'+ (data.error || 'Adresse unplausibel') +'</span>';
-      }
-    } catch(e) {
-      adrValid = false;
-      wrapper?.classList.add('invalid'); wrapper?.classList.remove('valid');
-      msg.innerHTML = '<span class="text-danger"><i class="bi bi-x-circle me-1"></i>Prüfung nicht möglich</span>';
-    }
-    updateWeiterState();
+  function setStatus(html, ok=false) {
+    if (!adr.status) return;
+    adr.status.innerHTML = html || '';
+    adr.status.className = ok ? 'ok' : 'bad';
   }
 
-  function updateWeiterState() {
+  async function fetchLocalities(plz) {
+    const url = `api/openplz_localities.php?postalcode=${encodeURIComponent(plz)}`;
+    const res = await fetch(url, {headers:{'X-CSRF-Token': CSRF_TOKEN}});
+    return res.json();
+  }
+  async function fetchStreets(plz, city) {
+    const url = `api/openplz_streets.php?postalcode=${encodeURIComponent(plz)}&locality=${encodeURIComponent(city)}`;
+    const res = await fetch(url, {headers:{'X-CSRF-Token': CSRF_TOKEN}});
+    return res.json();
+  }
+
+  function updateWeiterLock() {
     if (!btnWeiter) return;
-    if (step === 1) btnWeiter.disabled = !adrValid;
+    if (step === 1) btnWeiter.disabled = !adrReady;
   }
 
-  if (adrInput) {
-    adrInput.addEventListener('input', () => {
-      clearTimeout(adrTimer);
-      adrTimer = setTimeout(validateAddress, 350);
-    });
-    // initial lock
+  function composeFull() {
+    if (!adr.full) return;
+    if (adr.plz?.value && adr.ort?.value && adr.str?.value && adr.hnr?.value) {
+      adr.full.value = `${adr.str.value} ${adr.hnr.value}, ${adr.plz.value} ${adr.ort.value}`;
+      setStatus(`<i class="bi bi-check-circle me-1"></i>Adresse geprüft: ${adr.full.value}`, true);
+      adrReady = true;
+    } else {
+      adr.full.value = '';
+      adrReady = false;
+    }
+    updateWeiterLock();
+  }
+
+  if (adr.plz) {
     btnWeiter && (btnWeiter.disabled = true);
+    adr.plz.addEventListener('input', async () => {
+      const v = (adr.plz.value || '').replace(/\D+/g,'').slice(0,5);
+      adr.plz.value = v;
+      adr.ort.innerHTML = '<option value="">Bitte PLZ eingeben</option>'; adr.ort.disabled = true;
+      adr.str.innerHTML = '<option value="">Bitte Ort wählen</option>'; adr.str.disabled = true;
+      adr.hnr.value = ''; adr.hnr.disabled = true;
+      adrReady = false; composeFull();
+      if (v.length === 5) {
+        setStatus('<i class="bi bi-arrow-repeat"></i> Lade Orte …');
+        try {
+          const data = await fetchLocalities(v);
+          if (!data.ok || !data.localities?.length) { setStatus('<i class="bi bi-x-circle"></i> Keine Orte zur PLZ gefunden.'); return; }
+          adr.ort.innerHTML = '<option value="">Ort wählen</option>' + data.localities.map(o => `<option>${o}</option>`).join('');
+          adr.ort.disabled = false;
+          setStatus('<i class="bi bi-info-circle"></i> Ort wählen …');
+        } catch(e) { setStatus('<i class="bi bi-x-circle"></i> OpenPLZ nicht erreichbar.'); }
+      } else {
+        setStatus('');
+      }
+    });
+
+    adr.ort.addEventListener('change', async () => {
+      const plz = adr.plz.value, city = adr.ort.value;
+      adr.str.innerHTML = '<option value="">Bitte Ort wählen</option>'; adr.str.disabled = true;
+      adr.hnr.value = ''; adr.hnr.disabled = true;
+      adrReady = false; composeFull();
+      if (plz.length===5 && city) {
+        setStatus('<i class="bi bi-arrow-repeat"></i> Lade Straßen …');
+        try {
+          const data = await fetchStreets(plz, city);
+          if (!data.ok || !data.streets?.length) { setStatus('<i class="bi bi-x-circle"></i> Keine Straßen gefunden.'); return; }
+          adr.str.innerHTML = '<option value="">Straße wählen</option>' + data.streets.map(s => `<option>${s}</option>`).join('');
+          adr.str.disabled = false;
+          setStatus('<i class="bi bi-info-circle"></i> Straße wählen …');
+        } catch(e) { setStatus('<i class="bi bi-x-circle"></i> OpenPLZ nicht erreichbar.'); }
+      }
+    });
+
+    adr.str.addEventListener('change', () => {
+      adr.hnr.disabled = !adr.str.value;
+      adr.hnr.focus();
+      composeFull();
+    });
+
+    adr.hnr.addEventListener('input', () => composeFull());
   }
 
 })();
