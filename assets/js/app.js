@@ -35,7 +35,7 @@
   function resetWizard() {
     form.reset();
     // Clear custom selections
-    document.querySelectorAll('.card.selectable').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.segment .seg').forEach(c => c.classList.remove('active'));
     document.getElementById('detailsWohnung').classList.add('d-none');
     document.getElementById('detailsHaus').classList.add('d-none');
     document.getElementById('detailsMFH').classList.add('d-none');
@@ -46,8 +46,8 @@
   // Selectable cards visual toggle
   document.querySelectorAll('.btn-check').forEach(input => {
     input.addEventListener('change', () => {
-      document.querySelectorAll('.card.selectable').forEach(c => c.classList.remove('active'));
-      input.closest('label').querySelector('.card.selectable').classList.add('active');
+      document.querySelectorAll('.segment .seg').forEach(c => c.classList.remove('active'));
+      input.closest('label').querySelector('.segment .seg').classList.add('active');
       objektartError.style.display = 'none';
 
       // show correct details when we reach step 3

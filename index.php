@@ -34,9 +34,9 @@ $csrf = $_SESSION['csrf_token'];
       </div>
     </nav>
 
-    <header class="py-5 text-center bg-gradient">
+    <header class="py-5 text-center bg-hero">
       <div class="container">
-        <h1 class="display-5 fw-semibold">Wir renovieren. Sie profitieren.</h1>
+        <h1 class="display-4 fw-semibold">Wir renovieren. Sie profitieren.</h1>
         <p class="lead text-muted">Realistische Immobilien‑Einschätzung in wenigen Schritten.</p>
         <button id="btnPreisrechnerHero" class="btn btn-lg btn-primary mt-3">
           <i class="bi bi-magic me-2"></i> BetterDeal Preisrechner starten
@@ -105,10 +105,7 @@ $csrf = $_SESSION['csrf_token'];
               <div class="wizard-step" data-step="1">
                 <div class="mb-3">
                   <label class="form-label fw-semibold">Adresse <span class="text-danger">*</span></label>
-                  <div class="input-group">
-                    <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
-                    <input type="text" class="form-control" name="adresse" id="adresse" maxlength="120" placeholder="Geben Sie Ihre Adresse ein" required>
-                  </div>
+                  <div class="input-icon"><i class="bi bi-geo-alt"></i><input type="text" class="form-control" name="adresse" id="adresse" maxlength="120" placeholder="Geben Sie Ihre Adresse ein" required></div>
                   <div class="form-text">Optional: Karten‑Pin später integrierbar (Google Places / Leaflet).</div>
                   <div class="invalid-feedback">Bitte Adresse angeben.</div>
                 </div>
@@ -117,39 +114,15 @@ $csrf = $_SESSION['csrf_token'];
               <!-- STEP 2: Objektart -->
               <div class="wizard-step d-none" data-step="2">
                 <label class="form-label fw-semibold">Objektart wählen</label>
-                <div class="row g-3">
+                <div class="segment">
                   <div class="col-md-4">
-                    <label class="w-100">
-                      <input class="btn-check" type="radio" name="objektart" id="artWohnung" value="wohnung" required>
-                      <div class="card selectable h-100">
-                        <div class="card-body text-center py-4">
-                          <i class="bi bi-building-check display-6 d-block mb-2"></i>
-                          <div class="fw-semibold">Wohnung</div>
-                        </div>
-                      </div>
-                    </label>
+                    <label class="w-100 d-block"><input class="btn-check" type="radio" name="objektart" id="artWohnung" value="wohnung" required><div class="seg"><i class="bi bi-building-check d-block fs-3 mb-1"></i><div class="lbl">Wohnung</div></div></label>
                   </div>
                   <div class="col-md-4">
-                    <label class="w-100">
-                      <input class="btn-check" type="radio" name="objektart" id="artHaus" value="haus">
-                      <div class="card selectable h-100">
-                        <div class="card-body text-center py-4">
-                          <i class="bi bi-house-door display-6 d-block mb-2"></i>
-                          <div class="fw-semibold">Haus</div>
-                        </div>
-                      </div>
-                    </label>
+                    <label class="w-100 d-block"><input class="btn-check" type="radio" name="objektart" id="artHaus" value="haus"><div class="seg"><i class="bi bi-house-door d-block fs-3 mb-1"></i><div class="lbl">Haus</div></div></label>
                   </div>
                   <div class="col-md-4">
-                    <label class="w-100">
-                      <input class="btn-check" type="radio" name="objektart" id="artMFH" value="mehrfamilienhaus">
-                      <div class="card selectable h-100">
-                        <div class="card-body text-center py-4">
-                          <i class="bi bi-building display-6 d-block mb-2"></i>
-                          <div class="fw-semibold">Mehrfamilienhaus</div>
-                        </div>
-                      </div>
-                    </label>
+                    <label class="w-100 d-block"><input class="btn-check" type="radio" name="objektart" id="artMFH" value="mehrfamilienhaus"><div class="seg"><i class="bi bi-building d-block fs-3 mb-1"></i><div class="lbl">Mehrfamilienhaus</div></div></label>
                   </div>
                 </div>
                 <div class="invalid-feedback d-block mt-2" id="objektartError" style="display:none;">Bitte eine Objektart auswählen.</div>
@@ -160,7 +133,7 @@ $csrf = $_SESSION['csrf_token'];
                 <!-- Wohnung -->
                 <div id="detailsWohnung" class="d-none">
                   <h6 class="mb-3">Details zur Wohnung</h6>
-                  <div class="row g-3">
+                  <div class="segment">
                     <div class="col-md-6">
                       <label class="form-label">Subtyp</label>
                       <select class="form-select" name="w_subtyp">
@@ -249,7 +222,7 @@ $csrf = $_SESSION['csrf_token'];
                 <!-- Haus -->
                 <div id="detailsHaus" class="d-none">
                   <h6 class="mb-3">Haus‑Spezifikation</h6>
-                  <div class="row g-3">
+                  <div class="segment">
                     <div class="col-md-6">
                       <label class="form-label">Subtyp</label>
                       <select class="form-select" name="h_subtyp">
@@ -342,7 +315,7 @@ $csrf = $_SESSION['csrf_token'];
                 <!-- Mehrfamilienhaus -->
                 <div id="detailsMFH" class="d-none">
                   <h6 class="mb-3">Mehrfamilienhaus‑Spezifikation</h6>
-                  <div class="row g-3">
+                  <div class="segment">
                     <div class="col-md-6">
                       <label class="form-label">Baujahr <span class="text-danger">*</span></label>
                       <input type="number" class="form-control" name="m_baujahr" min="1800" max="2100" required>
