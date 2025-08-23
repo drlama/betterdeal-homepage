@@ -7,7 +7,7 @@ body { background:#fff; color:var(--bd-dark); }
 .navbar { background:#fff; border-bottom:1px solid #eee; }
 .navbar .nav-link { font-weight:600; color:#334155; }
 .navbar .nav-link:hover { color: var(--bd-primary); }
-.navbar-brand img{height:40px; width:auto;}
+.navbar-brand img{height: 60px; width:auto;}
 .btn-primary {
   --bs-btn-bg:var(--bd-primary);
   --bs-btn-border-color:var(--bd-primary);

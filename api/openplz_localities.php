@@ -18,27 +18,23 @@ function call_api(string $url) {
   curl_close($ch);
   if ($resp === false || $code < 200 || $code >= 300) return null;
   $data = json_decode($resp, true);
-  if ($data === null) return null;
   return $data;
 }
-
 function extract_items($data) {
   if (!$data) return [];
   if (isset($data['items']) && is_array($data['items'])) return $data['items'];
   if (isset($data['hydra:member']) && is_array($data['hydra:member'])) return $data['hydra:member'];
-  if (is_array($data) && array_keys($data) === range(0, count($data)-1)) return $data; // plain list
+  if (is_array($data) && array_values($data) === $data) return $data;
   return [];
 }
-
-function push_locality(&$arr, $val) {
-  $val = trim((string)$val);
-  if ($val !== '') $arr[] = $val;
+function candidate($rec, $keys) {
+  foreach ($keys as $k) { if (isset($rec[$k]) && $rec[$k] !== '') return (string)$rec[$k]; }
+  return '';
 }
 
 $localities = [];
+$records = [];
 $base = 'https://openplzapi.org/de/';
-
-// Try many endpoint/param variants
 $urls = [
   "Localities?postalCode=$plz",
   "Localities?postalcode=$plz",
@@ -50,17 +46,22 @@ $urls = [
   "FullTextSearch?searchTerm=$plz",
 ];
 foreach ($urls as $u) {
-  $data = call_api($base.$u);
-  $items = extract_items($data);
+  $items = extract_items(call_api($base.$u));
   foreach ($items as $it) {
-    foreach (['locality','name','city','place','value'] as $k) {
-      if (isset($it[$k]) && $it[$k]) push_locality($localities, $it[$k]);
+    $name = candidate($it, ['locality','name','city','place','value','label']);
+    $id   = candidate($it, ['id','localityId','identifier','@id']);
+    if ($name !== '') {
+      $localities[] = $name;
+      $records[] = ['name'=>$name, 'id'=>$id];
     }
   }
   if (!empty($localities)) break;
 }
 
 $localities = array_values(array_unique($localities));
+// De-duplicate records by name
+$map = []; foreach ($records as $r) { $map[$r['name']] = $r['id']; }
+$records = []; foreach ($map as $n=>$i) { $records[] = ['name'=>$n,'id'=>$i]; }
 
 if (empty($localities)) { echo json_encode(['ok'=>false,'error'=>'Keine Orte zur PLZ gefunden.']); exit; }
-echo json_encode(['ok'=>true, 'postalcode'=>$plz, 'localities'=>$localities]);
+echo json_encode(['ok'=>true, 'postalcode'=>$plz, 'localities'=>$localities, 'records'=>$records]);

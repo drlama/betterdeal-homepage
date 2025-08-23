@@ -281,13 +281,17 @@
     adr.status.innerHTML = html || '';
     adr.status.className = ok ? 'ok' : 'bad';
   }
+  let localityMap = new Map();
   async function fetchLocalities(plz) {
     const url = `api/openplz_localities.php?postalcode=${encodeURIComponent(plz)}`;
     const res = await fetch(url, {headers:{'X-CSRF-Token': CSRF_TOKEN}});
     return res.json();
   }
   async function fetchStreets(plz, city) {
-    const url = `api/openplz_streets.php?postalcode=${encodeURIComponent(plz)}&locality=${encodeURIComponent(city)}`;
+    const sel = adr.ort.tagName==='SELECT' ? adr.ort.options[adr.ort.selectedIndex] : null;
+    const locId = sel ? sel.getAttribute('data-id') : '';
+    const extra = locId ? `&localityId=${encodeURIComponent(locId)}` : '';
+    const url = `api/openplz_streets.php?postalcode=${encodeURIComponent(plz)}&locality=${encodeURIComponent(city)}${extra}`;
     const res = await fetch(url, {headers:{'X-CSRF-Token': CSRF_TOKEN}});
     return res.json();
   }
@@ -322,7 +326,14 @@
           adr.ort.disabled = false;
           return; 
         }
-          adr.ort.innerHTML = '<option value="">Ort wählen</option>' + data.localities.map(o => `<option>${o}</option>`).join('');
+          localityMap = new Map();
+          if (data.records) {
+            data.records.forEach(r => localityMap.set(r.name, r.id || ''));
+          }
+          adr.ort.innerHTML = '<option value="">Ort wählen</option>' + data.localities.map(o => {
+            const id = localityMap.get(o) || '';
+            return `<option data-id="${id}">${o}</option>`;
+          }).join('');
           adr.ort.disabled = false;
           setStatus('<i class="bi bi-info-circle"></i> Ort wählen …');
         } catch(e) { setStatus('<i class="bi bi-x-circle"></i> OpenPLZ nicht erreichbar.'); }
