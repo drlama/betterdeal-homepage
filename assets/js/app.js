@@ -1,4 +1,4 @@
-// BetterDeal landing + enhanced 5-step wizard
+// BetterDeal landing + enhanced 5-step wizard (corrected MFH logic)
 (function() {
   const modalEl = document.getElementById('preisrechnerModal');
   const modal = new bootstrap.Modal(modalEl);
@@ -28,6 +28,7 @@
   const wizardProgress = document.getElementById('wizardProgress');
   const objektartError = document.getElementById('objektartError');
   const autosaveInfo = document.getElementById('autosaveInfo');
+  const basisHeading = document.getElementById('basisHeading');
   let step = 1;
   const totalSteps = 5;
   const LS_KEY = 'bd_price_wizard';
@@ -40,14 +41,11 @@
     btnSenden.classList.toggle('d-none', step !== totalSteps);
     btnWeiter.classList.toggle('d-none', step === totalSteps);
     wizardProgress.style.width = (step * 100 / totalSteps) + '%';
-
-    // Stepper header states
     document.querySelectorAll('.stepper .step').forEach((el) => {
       const s = parseInt(el.getAttribute('data-step'), 10);
       el.classList.toggle('active', s === step);
       el.classList.toggle('done', s < step);
     });
-
     if (step === totalSteps) renderSummary();
   }
 
@@ -56,11 +54,9 @@
     form.reset();
     document.querySelectorAll('.segment .seg').forEach(c => c.classList.remove('active'));
     objektartError && (objektartError.style.display = 'none');
-    // toggles for dynamic fields
-    toggleBasisFields();
+    toggleTypeFields();
     updateLiveSummary();
     setStep(1);
-    // restore from localStorage if exists
     try {
       const cached = JSON.parse(localStorage.getItem(LS_KEY) || '{}');
       Object.entries(cached).forEach(([k,v]) => {
@@ -73,29 +69,35 @@
     } catch {}
   }
 
-  // Objektart selection -> visual + dynamic fields
   document.addEventListener('change', (e) => {
     const t = e.target;
     if (t.matches('.btn-check[name="objektart"]')) {
       document.querySelectorAll('.segment .seg').forEach(c => c.classList.remove('active'));
       t.closest('label').querySelector('.seg').classList.add('active');
       objektartError && (objektartError.style.display = 'none');
-      toggleBasisFields();
+      toggleTypeFields();
       updateLiveSummary();
       autosave();
     }
   });
 
-  // Change listeners for autosave + live summary
   form && form.addEventListener('input', () => { updateLiveSummary(); autosave(); });
 
-  function toggleBasisFields() {
+  function toggleTypeFields() {
     const art = getValue('objektart');
     const isHaus = art === 'haus';
     const isMFH = art === 'mehrfamilienhaus';
-    const isWhg = art === 'wohnung' || !art;
+    const isWhg = art === 'wohnung';
 
-    // Show/hide fields
+    // Step 3 heading
+    if (basisHeading) {
+      if (isMFH) basisHeading.textContent = 'Mehrfamilienhaus-Spezifikation';
+      else if (isHaus) basisHeading.textContent = 'Haus-Spezifikation';
+      else if (isWhg) basisHeading.textContent = 'Details zur Wohnung';
+      else basisHeading.textContent = 'Basisdaten';
+    }
+
+    // Step 3 fields
     show('fieldGrundstueck', isHaus);
     setRequired('b_grundstueck', isHaus);
 
@@ -105,9 +107,12 @@
     show('fieldGesamtWF', isMFH);
     setRequired('b_gesamtwf', isMFH);
 
-    // For Wohnung/Haus we use Wohnfläche; for MFH we hide Wohnfläche field
     show('fieldWohnflaeche', !isMFH);
     setRequired('b_wohnflaeche', !isMFH);
+
+    // Step 4 blocks
+    document.getElementById('ausstattungWhgHaus').classList.toggle('d-none', isMFH);
+    document.getElementById('ausstattungMFH').classList.toggle('d-none', !isMFH);
   }
 
   function show(id, visible) {
@@ -119,7 +124,6 @@
     const el = form.elements[name]; if (!el) return;
     el.required = !!req;
   }
-
   function getValue(name) {
     const el = form.elements[name];
     if (!el) return '';
@@ -131,11 +135,13 @@
   }
 
   function updateLiveSummary() {
+    const art = getValue('objektart');
+    const fl = art === 'mehrfamilienhaus' ? (getValue('b_gesamtwf') || '–') : (getValue('b_wohnflaeche') || '–');
     const map = {
       'adresse': getValue('adresse'),
-      'objektart': (getValue('objektart') || '–'),
+      'objektart': (art || '–'),
       'b_baujahr': getValue('b_baujahr') || '–',
-      'b_wohnflaeche': (getValue('b_wohnflaeche') || getValue('b_gesamtwf') || '–'),
+      'flaeche': fl,
       'b_energie': getValue('b_energie') || '–'
     };
     Object.entries(map).forEach(([k,v]) => {
@@ -160,26 +166,40 @@
   }
 
   function renderSummary() {
-    const list = document.getElementById('summaryList');
-    if (!list) return;
+    const art = getValue('objektart');
+    const list = document.getElementById('summaryList'); if (!list) return;
     list.innerHTML = '';
-    const labels = {
+    const labelsBase = {
       adresse:'Adresse', objektart:'Objektart',
       b_baujahr:'Baujahr', b_modernisierung:'Modernisierungsjahr',
-      b_wohnflaeche:'Wohnfläche (m²)', b_grundstueck:'Grundstück (m²)',
-      b_we:'Wohneinheiten', b_gesamtwf:'Gesamtwohnfläche (m²)',
-      b_energie:'Energie-Label',
+      b_energie:'Energie-Label'
+    };
+    const labelsWhgHaus = {
+      b_wohnflaeche:'Wohnfläche (m²)',
       a_zimmer:'Zimmer', a_baeder:'Bäder', a_balkon:'Balkon/Terrasse (m²)',
       a_garten:'Garten (m²)', a_garagen:'Garagenplätze', a_park:'Außenparkplätze',
       a_waerme:'Wärmeerzeugung'
     };
+    const labelsHausOnly = { b_grundstueck:'Grundstück (m²)' };
+    const labelsMFH = { b_we:'Wohneinheiten', b_gesamtwf:'Gesamtwohnfläche (m²)', m_netto_miete:'Nettomiete p.a. (EUR)' };
+
+    const finalLabels = Object.assign({}, labelsBase);
+    if (art === 'mehrfamilienhaus') Object.assign(finalLabels, labelsMFH);
+    else {
+      Object.assign(finalLabels, labelsWhgHaus);
+      if (art === 'haus') Object.assign(finalLabels, labelsHausOnly);
+    }
+
+    // collect values
     const data = {};
-    Object.keys(labels).forEach(k => data[k] = getValue(k));
-    Object.entries(data).forEach(([k,v]) => {
+    Object.keys(finalLabels).forEach(k => data[k] = getValue(k));
+
+    Object.entries(finalLabels).forEach(([k,label]) => {
+      const v = data[k];
       if (v === '' || v === null) return;
       const item = document.createElement('div');
       item.className = 'list-group-item d-flex justify-content-between';
-      item.innerHTML = `<span class="text-muted">${labels[k]}</span><strong>${v}</strong>`;
+      item.innerHTML = `<span class="text-muted">${label}</span><strong>${v}</strong>`;
       list.appendChild(item);
     });
   }
@@ -194,11 +214,11 @@
     if (step === 2) {
       const selected = getValue('objektart');
       if (!selected) { objektartError && (objektartError.style.display = 'block'); return; }
-      toggleBasisFields();
+      toggleTypeFields();
       setStep(3); return;
     }
     if (step === 3) {
-      // minimal requireds are set via toggleBasisFields
+      // requireds are set via toggleTypeFields
       if (!form.checkValidity()) { form.classList.add('was-validated'); return; }
       setStep(4); return;
     }
@@ -210,7 +230,6 @@
   if (btnZurueck) btnZurueck.addEventListener('click', () => { if (step > 1) setStep(step-1); });
 
   if (form) form.addEventListener('submit', async function (event) {
-    // Temporary remove required on hidden
     document.querySelectorAll('[required]').forEach(el => { if (el.closest('.d-none')) el.dataset.requiredWas='1', el.required=false; });
     if (!form.checkValidity()) {
       event.preventDefault(); event.stopPropagation(); form.classList.add('was-validated');
@@ -218,18 +237,12 @@
       return;
     }
     event.preventDefault(); event.stopPropagation();
-
-    // Submit
     const formData = new FormData(form); formData.append('ts', new Date().toISOString());
     try {
       const res = await fetch('api/submit_price_request.php', { method:'POST', headers:{'X-CSRF-Token': CSRF_TOKEN}, body: formData });
       const data = await res.json();
-      if (data.ok) {
-        new bootstrap.Toast(document.getElementById('toastSuccess')).show(); modal.hide();
-        localStorage.removeItem(LS_KEY);
-      } else {
-        alert('Fehler: ' + (data.error || 'Unbekannt'));
-      }
+      if (data.ok) { new bootstrap.Toast(document.getElementById('toastSuccess')).show(); modal.hide(); localStorage.removeItem(LS_KEY); }
+      else { alert('Fehler: ' + (data.error || 'Unbekannt')); }
     } catch (e) { alert('Netzwerkfehler: ' + e.message); }
     finally { document.querySelectorAll('[data-required-was="1"]').forEach(el => { el.required=true; delete el.dataset.requiredWas; }); }
   });
