@@ -8,7 +8,7 @@ function initBetterDealModal() {
     const modal = document.getElementById('betterDealModal');
     const form = document.getElementById('betterDealForm');
     const messageDiv = document.getElementById('modalMessage');
-    const submitBtn = form.querySelector('button[type="submit"]');
+    const submitBtn = document.querySelector('button[form="betterDealForm"]');
     const spinner = document.getElementById('modalSpinner');
     const dynamicFields = document.getElementById('dynamicFields');
 
