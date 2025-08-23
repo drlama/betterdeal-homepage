@@ -1,10 +1,84 @@
-<!-- Modal-Komponente und Button -->
-<div id="modal" class="modal">
-  <div class="modal-content">
-    <span class="close-button">&times;</span>
-    <h1>Preisrechner</h1>
-    <p>Hier können Sie Ihre Preise berechnen.</p>
-  </div>
-</div>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>BetterDeal.de – Immobilienpreisrechner</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>BetterDeal.de</h1>
+      <nav>
+        <a href="#">Home</a>
+        <a href="#">Leistungen</a>
+        <a href="#">Kontakt</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <div class="container">
+      <section>
+        <h2>Willkommen bei BetterDeal!</h2>
+        <p>Berechnen Sie den optimalen Immobilienpreis für Ihr Objekt.</p>
+        <button id="betterdeal-btn" class="betterdeal-btn">Better Deal Preis errechnen</button>
+      </section>
+      <section>
+        <h3>Über uns</h3>
+        <p>Wir bieten Ihnen eine schnelle und professionelle Bewertung Ihrer Immobilie – kostenlos und unverbindlich.</p>
+      </section>
+    </div>
+  </main>
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 BetterDeal.de – Ihr Immobilienprofi</p>
+    </div>
+  </footer>
 
-<button id="open-modal">Preisrechner öffnen</button
+  <!-- Modal -->
+  <div id="betterdeal-modal" class="modal-overlay">
+    <div class="modal-content">
+      <span class="modal-close" id="modal-close">&times;</span>
+      <form id="betterdeal-form">
+        <!-- Step 1: Adresse & Objekttyp -->
+        <div id="step-1" class="modal-step active">
+          <label for="address" class="modal-label">Adresse *</label>
+          <div class="modal-input-group">
+            <span class="modal-icon"><i class="fa-solid fa-location-dot"></i></span>
+            <input type="text" id="address" name="address" maxlength="60" required placeholder="Geben Sie Ihre Adresse ein">
+          </div>
+          <div class="modal-info">
+            Um einen Standort zu wählen, können Sie auch den Pin auf der Karte verschieben.
+          </div>
+          <div class="modal-objekttyp">
+            <label>
+              <input type="radio" name="objekttyp" value="wohnung" checked>
+              <span><i class="fa-solid fa-building"></i> Wohnung</span>
+            </label>
+            <label>
+              <input type="radio" name="objekttyp" value="haus">
+              <span><i class="fa-solid fa-house"></i> Haus</span>
+            </label>
+            <label>
+              <input type="radio" name="objekttyp" value="mehrfamilienhaus">
+              <span><i class="fa-solid fa-city"></i> Mehrfamilienhaus</span>
+            </label>
+          </div>
+          <button type="button" class="modal-next" id="next-step">Weiter</button>
+        </div>
+
+        <!-- Step 2: Dynamische Felder -->
+        <div id="step-2" class="modal-step">
+          <div id="dynamic-fields"></div>
+          <button type="button" class="modal-prev" id="prev-step">Zurück</button>
+          <button type="submit" class="modal-submit">Absenden</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/betterdeal-modal.js"></script>
+</body>
+</html>
