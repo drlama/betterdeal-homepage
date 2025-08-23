@@ -65,3 +65,5 @@ body { font-feature-settings: "ss01" on, "cv01" on; }
 .stepper::before{ content:""; position:absolute; left:14px; right:14px; top:14px; height:2px; background:#e5e7eb; z-index:0;}
 .stepper .step{ position:relative; z-index:1; }
 .footer-dark { background: linear-gradient(180deg, #0b1220 0%, #0a0f1a 100%); }
+
+.navbar-brand img{height:36px; width:auto; image-rendering:auto}
