@@ -247,4 +247,50 @@
     finally { document.querySelectorAll('[data-required-was="1"]').forEach(el => { el.required=true; delete el.dataset.requiredWas; }); }
   });
 
+
+  // ---- Address live validation ----
+  const adrInput = form ? form.elements['adresse'] : null;
+  let adrValid = false, adrTimer = null;
+
+  async function validateAddress() {
+    if (!adrInput) return;
+    const v = adrInput.value.trim();
+    const msg = document.getElementById('adrMsg');
+    const wrapper = adrInput.closest('.input-icon')?.parentElement || adrInput.parentElement;
+    if (v.length < 6) { adrValid = false; wrapper?.classList.remove('valid','invalid'); msg.textContent=''; return; }
+    try {
+      const fd = new FormData(); fd.append('adresse', v);
+      const res = await fetch('api/validate_address.php', { method:'POST', headers:{'X-CSRF-Token': CSRF_TOKEN}, body: fd });
+      const data = await res.json();
+      if (data.ok) {
+        adrValid = true;
+        wrapper?.classList.add('valid'); wrapper?.classList.remove('invalid');
+        msg.innerHTML = '<span class="text-success"><i class="bi bi-check-circle me-1"></i>Adresse plausibel</span>';
+      } else {
+        adrValid = false;
+        wrapper?.classList.add('invalid'); wrapper?.classList.remove('valid');
+        msg.innerHTML = '<span class="text-danger"><i class="bi bi-x-circle me-1"></i>'+ (data.error || 'Adresse unplausibel') +'</span>';
+      }
+    } catch(e) {
+      adrValid = false;
+      wrapper?.classList.add('invalid'); wrapper?.classList.remove('valid');
+      msg.innerHTML = '<span class="text-danger"><i class="bi bi-x-circle me-1"></i>Prüfung nicht möglich</span>';
+    }
+    updateWeiterState();
+  }
+
+  function updateWeiterState() {
+    if (!btnWeiter) return;
+    if (step === 1) btnWeiter.disabled = !adrValid;
+  }
+
+  if (adrInput) {
+    adrInput.addEventListener('input', () => {
+      clearTimeout(adrTimer);
+      adrTimer = setTimeout(validateAddress, 350);
+    });
+    // initial lock
+    btnWeiter && (btnWeiter.disabled = true);
+  }
+
 })();

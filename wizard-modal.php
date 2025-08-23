@@ -28,8 +28,10 @@
                 <div class="input-icon mb-2">
                   <i class="bi bi-geo-alt"></i>
                   <input type="text" class="form-control" name="adresse" id="adresse" maxlength="120" placeholder="Straße Hausnr., PLZ Ort" required>
+                <div id="adrHint" class="advice mt-1"><i class="bi bi-info-circle"></i> Format: „Straße Hausnr., PLZ Ort“ – z. B. <em>Musterstraße 12, 80331 München</em>.</div>
+                <div id="adrMsg" class="validation-msg mt-1"></div>
                 </div>
-                <div class="small-help"><i class="bi bi-lightbulb"></i> Tipp: Google-Places-Autocomplete kann später ergänzt werden.</div>
+                <div class="small-help"><i class="bi bi-lightbulb"></i> Die Adresse wird live über die OpenPLZ API geprüft.</div>
               </div>
 
               <!-- STEP 2 -->

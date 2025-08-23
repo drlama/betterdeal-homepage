@@ -45,3 +45,9 @@ body { background:#fff; color:var(--bd-dark); }
 .footer-dark{ background:#0b1220; color:#cbd5e1; }
 .footer-dark a{ color:#e2e8f0; text-decoration:none }
 .footer-dark a:hover{ text-decoration:underline }
+
+/* Address validation styling */
+.advice{color:#6b7280; font-size:.9rem}
+.validation-msg{font-size:.9rem}
+.valid .form-control{border-color:#22c55e}
+.invalid .form-control{border-color:#ef4444}
