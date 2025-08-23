@@ -355,6 +355,7 @@
           adr.str.disabled = false;
           return; 
         }
+          revertToSelect(adr.str);
           adr.str.innerHTML = '<option value="">Straße wählen</option>' + data.streets.map(s => `<option>${s}</option>`).join('');
           adr.str.disabled = false;
           setStatus('<i class="bi bi-info-circle"></i> Straße wählen …');

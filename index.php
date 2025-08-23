@@ -19,8 +19,8 @@ $csrf = $_SESSION['csrf_token'];
   <body>
     <nav class="navbar navbar-expand-lg">
       <div class="container">
-        <a class="navbar-brand d-flex align-items-center gap-2" href="/">
-          <img src="assets/img/logo.png" height="40" alt="BetterDeal"> <span class="fw-semibold">BetterDeal</span>
+        <a class="navbar-brand d-flex align-items-center" href="/" aria-label="BetterDeal">
+          <img src="assets/img/logo.png" alt="BetterDeal">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
           <span class="navbar-toggler-icon"></span>

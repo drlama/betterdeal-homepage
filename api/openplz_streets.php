@@ -22,56 +22,70 @@ function call_api(string $url) {
   $data = json_decode($resp, true);
   return $data;
 }
-function extract_items($data) {
+function items($data) {
   if (!$data) return [];
   if (isset($data['items']) && is_array($data['items'])) return $data['items'];
   if (isset($data['hydra:member']) && is_array($data['hydra:member'])) return $data['hydra:member'];
   if (is_array($data) && array_values($data) === $data) return $data;
   return [];
 }
-function push_street(&$arr, $val) {
-  $val = trim((string)$val);
-  if ($val !== '') $arr[] = $val;
+function add_street(&$arr, $val) {
+  $v = trim((string)$val);
+  if ($v !== '') $arr[$v] = true;
 }
-
 $streets = [];
 $base = 'https://openplzapi.org/de/';
-$try = [];
 
-if ($locId !== '') {
-  $try[] = "Streets?localityId=" . urlencode($locId);
-  $try[] = "StreetNames?localityId=" . urlencode($locId);
-  $try[] = "Streets?locality=" . urlencode($city) . "&postalCode=" . urlencode($plz);
-} else {
-  $try[] = "Streets?locality=" . urlencode($city) . "&postalCode=" . urlencode($plz);
-  $try[] = "Streets?postalcode=" . urlencode($plz) . "&locality=" . urlencode($city);
-}
-
-foreach ($try as $u) {
-  $page = 1; $pageSize = 250; $countAddedBefore = count($streets);
+// Helper to fetch a page (or multiple) for a given query tail
+function fetch_series(&$streets, $query) {
+  global $base;
+  $page = 1; $limitPages = 10;
   do {
-    $url = $base.$u . (strpos($u,'?')!==false ? '&' : '?') . "page=$page&pageSize=$pageSize";
-    $items = extract_items(call_api($url));
-    foreach ($items as $it) {
+    $url = $base.$query.(strpos($query,'?')!==false? '&':'?')."page=$page";
+    $data = call_api($url);
+    $its = items($data);
+    foreach ($its as $it) {
       foreach (['name','streetname','street','value','label'] as $k) {
-        if (isset($it[$k]) && $it[$k] !== '') { push_street($streets, $it[$k]); break; }
+        if (!empty($it[$k])) { add_street($streets, $it[$k]); break; }
       }
     }
     $page++;
-  } while (!empty($items) && count($items) === $pageSize && $page <= 20);
-  if (count($streets) > $countAddedBefore) break;
+  } while (!empty($its) && $page <= $limitPages);
 }
 
-if (empty($streets)) {
-  // Fallback: Volltextsuche auf PLZ + Ort, extrahiere erkennbare Straßennamen
-  $ft = extract_items(call_api($base."FullTextSearch?searchTerm=".urlencode("$plz $city")));
-  foreach ($ft as $it) {
-    foreach (['street','name','label','value'] as $k) {
-      if (isset($it[$k])) push_street($streets, $it[$k]);
-    }
+// Strategy 1: use localityId with alphabet buckets (name=^A.* etc.)
+$letters = array_merge(range('a','z'), ['ä','ö','ü','ß', '0','1','2','3','4','5','6','7','8','9']);
+if ($locId !== '') {
+  foreach ($letters as $ch) {
+    $q = "Streets?localityId=".urlencode($locId)."&name=%5E".urlencode($ch).".*";
+    fetch_series($streets, $q);
   }
 }
 
-$streets = array_values(array_unique($streets));
-if (empty($streets)) { echo json_encode(['ok'=>false,'error'=>'Keine Straßen gefunden']); exit; }
-echo json_encode(['ok'=>true, 'streets'=>$streets, 'count'=>count($streets)]);
+// Strategy 2: by city+plz (in case no localityId or API refuses)
+if (empty($streets)) {
+  foreach ($letters as $ch) {
+    $q = "Streets?locality=".urlencode($city)."&postalCode=".urlencode($plz)."&name=%5E".urlencode($ch).".*";
+    fetch_series($streets, $q);
+  }
+}
+
+// Strategy 3: StreetNames endpoint (if exists)
+if (empty($streets) && $locId !== '') {
+  foreach ($letters as $ch) {
+    $q = "StreetNames?localityId=".urlencode($locId)."&name=%5E".urlencode($ch).".*";
+    fetch_series($streets, $q);
+  }
+}
+
+// Strategy 4: FullText fallback
+if (empty($streets)) {
+  $fts = items(call_api($base."FullTextSearch?searchTerm=".urlencode("$plz $city")));
+  foreach ($fts as $it) {
+    foreach (['street','name','label','value'] as $k) if (!empty($it[$k])) add_street($streets, $it[$k]);
+  }
+}
+
+$out = array_keys($streets); sort($out, SORT_NATURAL | SORT_FLAG_CASE);
+if (empty($out)) { echo json_encode(['ok'=>false,'error'=>'Keine Straßen gefunden']); exit; }
+echo json_encode(['ok'=>true, 'streets'=>$out, 'count'=>count($out)]);
