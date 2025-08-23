@@ -10,6 +10,7 @@ $dir = __DIR__.'/../storage'; if (!is_dir($dir)) mkdir($dir, 0775, true);
 $file = $dir.'/contact.csv';
 $fields = ['vorname','nachname','email','nachricht'];
 $line = [date('c')];
-foreach ($fields as $k) { $line[] = str_replace(["\n","\r",";"], [' ',' ',' '], (string)($_POST[$k] ?? '')); }
+foreach ($fields as $k) { $line[] = str_replace(["
+","",";"], [' ',' ',' '], (string)($_POST[$k] ?? '')); }
 $fp = fopen($file, file_exists($file)?'a':'w'); fputcsv($fp, $line, ';'); fclose($fp);
 echo json_encode(['ok'=>true]);

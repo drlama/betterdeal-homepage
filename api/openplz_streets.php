@@ -8,7 +8,7 @@ $plz = preg_replace('/\D+/', '', $_GET['postalcode'] ?? '');
 $city = trim($_GET['locality'] ?? '');
 if (strlen($plz)!==5 || $city==='') { echo json_encode(['ok'=>false,'error'=>'Parameter fehlen']); exit; }
 $streets = [];
-$page = 1; $pageSize = 250; $max = 2000;
+$page = 1; $pageSize = 250; $max = 3000;
 do {
   $url = 'https://openplzapi.org/de/Streets?name=%5E.*%24&postalCode='.urlencode($plz).'&locality='.urlencode($city).'&page='.$page.'&pageSize='.$pageSize;
   $ch = curl_init();
@@ -17,7 +17,10 @@ do {
   if ($resp===false || $code!==200) { break; }
   $data = json_decode($resp,true);
   $items = isset($data['items']) && is_array($data['items']) ? $data['items'] : [];
-  foreach ($items as $it) { if (!empty($it['name'])) $streets[] = $it['name']; }
+  foreach ($items as $it) {
+    if (!empty($it['name'])) $streets[] = $it['name'];
+    elseif (!empty($it['streetname'])) $streets[] = $it['streetname'];
+  }
   $page++;
   if (count($streets) >= $max) break;
 } while (!empty($items) && count($items) === $pageSize);

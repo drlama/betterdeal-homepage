@@ -1,11 +1,9 @@
-// BetterDeal – Landing + Wizard
 (function() {
   const modalEl = document.getElementById('preisrechnerModal');
   const modal = new bootstrap.Modal(modalEl);
   const openButtons = [document.getElementById('btnPreisrechnerHero')].filter(Boolean);
   openButtons.forEach(btn => btn.addEventListener('click', () => { resetWizard(); modal.show(); }));
 
-  // Contact form AJAX
   const contactForm = document.getElementById('contactForm');
   if (contactForm) {
     contactForm.addEventListener('submit', async (e) => {
@@ -20,7 +18,6 @@
     });
   }
 
-  // Wizard
   const form = document.getElementById('preisrechnerForm');
   const btnWeiter = document.getElementById('btnWeiter');
   const btnSenden = document.getElementById('btnSenden');
@@ -204,10 +201,7 @@
   }
 
   if (btnWeiter) btnWeiter.addEventListener('click', () => {
-    if (step === 1) {
-      // Locked via address flow; just advance
-      setStep(2); return;
-    }
+    if (step === 1) { setStep(2); return; }
     if (step === 2) {
       const selected = getValue('objektart');
       if (!selected) { objektartError && (objektartError.style.display = 'block'); return; }
@@ -218,9 +212,7 @@
       if (!form.checkValidity()) { form.classList.add('was-validated'); return; }
       setStep(4); return;
     }
-    if (step === 4) {
-      setStep(5); return;
-    }
+    if (step === 4) { setStep(5); return; }
   });
 
   if (btnZurueck) btnZurueck.addEventListener('click', () => { if (step > 1) setStep(step-1); });
@@ -242,7 +234,6 @@
     } catch (e) { alert('Netzwerkfehler: ' + e.message); }
   });
 
-  // ---- Step 1: PLZ -> Ort -> Straße -> Hausnummer (OpenPLZ) ----
   const adr = {
     plz: form ? document.getElementById('adr_plz') : null,
     ort: form ? document.getElementById('adr_ort') : null,
@@ -251,14 +242,12 @@
     full: form ? document.getElementById('adresse') : null,
     status: document.getElementById('adr_status')
   };
-  let adrReady = false; // controls Weiter in step 1
-
+  let adrReady = false;
   function setStatus(html, ok=false) {
     if (!adr.status) return;
     adr.status.innerHTML = html || '';
     adr.status.className = ok ? 'ok' : 'bad';
   }
-
   async function fetchLocalities(plz) {
     const url = `api/openplz_localities.php?postalcode=${encodeURIComponent(plz)}`;
     const res = await fetch(url, {headers:{'X-CSRF-Token': CSRF_TOKEN}});
@@ -269,25 +258,16 @@
     const res = await fetch(url, {headers:{'X-CSRF-Token': CSRF_TOKEN}});
     return res.json();
   }
-
-  function updateWeiterLock() {
-    if (!btnWeiter) return;
-    if (step === 1) btnWeiter.disabled = !adrReady;
-  }
-
+  function updateWeiterLock() { if (btnWeiter && step===1) btnWeiter.disabled = !adrReady; }
   function composeFull() {
     if (!adr.full) return;
     if (adr.plz?.value && adr.ort?.value && adr.str?.value && adr.hnr?.value) {
       adr.full.value = `${adr.str.value} ${adr.hnr.value}, ${adr.plz.value} ${adr.ort.value}`;
       setStatus(`<i class="bi bi-check-circle me-1"></i>Adresse geprüft: ${adr.full.value}`, true);
       adrReady = true;
-    } else {
-      adr.full.value = '';
-      adrReady = false;
-    }
+    } else { adr.full.value = ''; adrReady = false; }
     updateWeiterLock();
   }
-
   if (adr.plz) {
     btnWeiter && (btnWeiter.disabled = true);
     adr.plz.addEventListener('input', async () => {
@@ -306,11 +286,8 @@
           adr.ort.disabled = false;
           setStatus('<i class="bi bi-info-circle"></i> Ort wählen …');
         } catch(e) { setStatus('<i class="bi bi-x-circle"></i> OpenPLZ nicht erreichbar.'); }
-      } else {
-        setStatus('');
-      }
+      } else { setStatus(''); }
     });
-
     adr.ort.addEventListener('change', async () => {
       const plz = adr.plz.value, city = adr.ort.value;
       adr.str.innerHTML = '<option value="">Bitte Ort wählen</option>'; adr.str.disabled = true;
@@ -327,14 +304,7 @@
         } catch(e) { setStatus('<i class="bi bi-x-circle"></i> OpenPLZ nicht erreichbar.'); }
       }
     });
-
-    adr.str.addEventListener('change', () => {
-      adr.hnr.disabled = !adr.str.value;
-      adr.hnr.focus();
-      composeFull();
-    });
-
+    adr.str.addEventListener('change', () => { adr.hnr.disabled = !adr.str.value; adr.hnr.focus(); composeFull(); });
     adr.hnr.addEventListener('input', () => composeFull());
   }
-
 })();

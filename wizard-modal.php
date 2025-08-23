@@ -1,5 +1,4 @@
 <?php
-// BetterDeal – Preisrechner Wizard
 ?>
 <div class="modal fade" id="preisrechnerModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-xl modal-dialog-centered">
@@ -22,7 +21,6 @@
             <div class="progress mb-3" role="progressbar"><div id="wizardProgress" class="progress-bar" style="width: 20%"></div></div>
             <form id="preisrechnerForm" class="needs-validation" novalidate>
               <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES); ?>">
-              <!-- STEP 1: Adresse via OpenPLZ -->
               <div class="wizard-step" data-step="1">
                 <label class="form-label fw-semibold">Adresse <span class="text-danger">*</span></label>
                 <div class="addr-grid row g-3">
@@ -54,7 +52,6 @@
                 </div>
               </div>
 
-              <!-- STEP 2 -->
               <div class="wizard-step d-none" data-step="2">
                 <label class="form-label fw-semibold">Objektart wählen</label>
                 <div class="segment">
@@ -65,7 +62,6 @@
                 <div class="invalid-feedback d-block mt-2" id="objektartError" style="display:none;">Bitte eine Objektart auswählen.</div>
               </div>
 
-              <!-- STEP 3: Basisdaten (type-aware) -->
               <div class="wizard-step d-none" data-step="3">
                 <h6 class="mb-3" id="basisHeading">Basisdaten</h6>
                 <div class="row g-3">
@@ -102,7 +98,6 @@
                 </div>
               </div>
 
-              <!-- STEP 4: Details (type-aware) -->
               <div class="wizard-step d-none" data-step="4">
                 <div id="ausstattungWhgHaus">
                   <h6 class="mb-3">Ausstattung</h6>
@@ -133,7 +128,6 @@
                 </div>
               </div>
 
-              <!-- STEP 5: Zusammenfassung -->
               <div class="wizard-step d-none" data-step="5">
                 <h6 class="mb-3">Zusammenfassung</h6>
                 <div id="summaryList" class="list-group small mb-3"></div>
@@ -169,7 +163,6 @@
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </div>
