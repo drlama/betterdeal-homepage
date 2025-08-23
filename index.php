@@ -20,7 +20,7 @@ $csrf = $_SESSION['csrf_token'];
     <!-- NAV -->
     <nav class="navbar navbar-expand-lg">
       <div class="container">
-        <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="/">
           <img src="assets/img/logo.png" height="26" alt="BetterDeal"> <span class="fw-semibold">BetterDeal</span>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
@@ -31,13 +31,12 @@ $csrf = $_SESSION['csrf_token'];
             <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
             <li class="nav-item"><a class="nav-link" href="#why">Wie es funktioniert</a></li>
             <li class="nav-item"><a class="nav-link" href="#contact">Kontakt</a></li>
-            <li class="nav-item ms-lg-2"><button id="btnPreisrechner" class="btn btn-primary">Preisrechner</button></li>
           </ul>
         </div>
       </div>
     </nav>
 
-    <!-- HERO -->
+    <!-- HERO (white background) -->
     <header id="home" class="hero-bg py-5">
       <div class="container">
         <div class="row align-items-center g-5">
@@ -51,12 +50,14 @@ $csrf = $_SESSION['csrf_token'];
             </div>
           </div>
           <div class="col-lg-6">
+            <!-- YouTube embed placeholder -->
             <div class="border rounded-4 shadow-sm p-3 bg-white">
               <div class="small text-muted mb-2">Vorschau</div>
-              <div class="ratio ratio-16x9 bg-dark rounded-3 position-relative">
-                <img src="assets/img/hero-mock.jpg" alt="Mock" class="w-100 h-100" style="object-fit:cover;">
-                <div class="position-absolute bottom-0 start-0 end-0 bg-bd" style="height:40px;"></div>
+              <div class="ratio ratio-16x9 rounded-3 overflow-hidden">
+                <!-- Replace src with your actual YouTube URL (embed) -->
+                <iframe src="about:blank" title="BetterDeal Video" allowfullscreen></iframe>
               </div>
+              <div class="small text-muted mt-2">Video folgt – YouTube-URL kann direkt hier eingetragen werden.</div>
             </div>
           </div>
         </div>
@@ -148,8 +149,18 @@ $csrf = $_SESSION['csrf_token'];
       </div>
     </section>
 
-    <footer class="py-4 text-center text-muted small">
-      © <?php echo date('Y'); ?> BetterDeal – Wir renovieren. Sie profitieren.
+    <!-- Footer (dark) -->
+    <footer class="footer-dark py-5">
+      <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+        <div class="small">© <?php echo date('Y'); ?> BetterDeal – Wir renovieren. Sie profitieren.</div>
+        <ul class="list-inline m-0 small">
+          <li class="list-inline-item"><a href="impressum.php">Impressum</a></li>
+          <li class="list-inline-item">·</li>
+          <li class="list-inline-item"><a href="agb.php">AGB</a></li>
+          <li class="list-inline-item">·</li>
+          <li class="list-inline-item"><a href="widerruf.php">Widerruf</a></li>
+        </ul>
+      </div>
     </footer>
 
     <?php include 'wizard-modal.php'; ?>
