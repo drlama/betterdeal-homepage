@@ -49,3 +49,19 @@ body { background:#fff; color:var(--bd-dark); }
 .footer-dark{ background:#0b1220; color:#cbd5e1; }
 .footer-dark a{ color:#e2e8f0; text-decoration:none }
 .footer-dark a:hover{ text-decoration:underline }
+
+/* --- Modern polish --- */
+body { font-feature-settings: "ss01" on, "cv01" on; }
+.display-5 { letter-spacing:-.02em; }
+.btn { border-radius: 999px; padding:.75rem 1.25rem; }
+.btn-outline-secondary { border-radius: 999px; }
+.badge-soft { background: linear-gradient(135deg, #fff, #f9fafb); border:1px solid #eef2f7; }
+.navbar .nav-link { font-weight:600; color:#334155; }
+.navbar .nav-link:hover { color: var(--bd-primary); }
+.card { box-shadow: 0 10px 30px rgba(2,8,23,.06); }
+.segment .seg { backdrop-filter: saturate(140%) blur(2px); }
+.stepper .step .label{ font-size:.85rem; }
+.stepper{ position:relative; }
+.stepper::before{ content:""; position:absolute; left:14px; right:14px; top:14px; height:2px; background:#e5e7eb; z-index:0;}
+.stepper .step{ position:relative; z-index:1; }
+.footer-dark { background: linear-gradient(180deg, #0b1220 0%, #0a0f1a 100%); }
