@@ -46,7 +46,7 @@ $csrf = $_SESSION['csrf_token'];
             <p class="lead mb-4">Ihre Immobilie lässt sich im unsanierten Zustand nur schwer verkaufen? Wir übernehmen die komplette Renovierung – Sie ohne Kostenrisiko – und erzielen so einen deutlich höheren Verkaufserlös.</p>
             <div class="d-flex gap-3">
               <button id="btnPreisrechnerHero" class="btn btn-primary btn-lg"><i class="bi bi-calculator me-2"></i> BetterDeal-Preis errechnen</button>
-              <a class="btn btn-outline-primary btn-lg" href="#why">Wie wir arbeiten</a>
+              
             </div>
           </div>
           <div class="col-lg-6">
