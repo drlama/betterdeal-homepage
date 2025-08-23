@@ -1,0 +1,27 @@
+/* Basic styling */
+.bg-gradient {
+  background: radial-gradient(ellipse at center, #fff 0%, #f3f6ff 100%);
+}
+.card.selectable {
+  border: 1.5px solid var(--bs-border-color);
+  transition: all .2s ease;
+}
+.card.selectable:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 .25rem .8rem rgba(0,0,0,.08);
+}
+
+/* Checked state for btn-check + card */
+.btn-check:checked + .card.selectable,
+.card.selectable.active {
+  border-color: var(--bs-primary);
+  box-shadow: 0 0 0 .25rem rgba(var(--bs-primary-rgb), .25);
+}
+
+.wizard-step {}
+
+/* Make modal body scroll nicely on small screens */
+.modal .modal-body {
+  max-height: 70vh;
+  overflow-y: auto;
+}
