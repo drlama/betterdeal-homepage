@@ -234,6 +234,39 @@
     } catch (e) { alert('Netzwerkfehler: ' + e.message); }
   });
 
+
+  // Helpers to swap selects to free-text with datalist as graceful fallback
+  function swapToInput(selectEl, listId, placeholder) {
+    if (!selectEl || selectEl.dataset.swapped === '1') return selectEl;
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'form-control';
+    input.placeholder = placeholder || '';
+    input.id = selectEl.id;
+    input.name = selectEl.name;
+    input.required = selectEl.required;
+    input.disabled = false;
+    const dl = document.createElement('datalist'); dl.id = listId;
+    input.setAttribute('list', listId);
+    // Move options -> datalist
+    const opts = Array.from(selectEl.querySelectorAll('option')).map(o => o.value || o.textContent);
+    dl.innerHTML = [...new Set(opts)].filter(Boolean).map(v => `<option value="${v}">`).join('');
+    selectEl.after(dl);
+    selectEl.after(input);
+    selectEl.dataset.swapped = '1';
+    selectEl.style.display = 'none';
+    return input;
+  }
+  function revertToSelect(selectEl) {
+    if (!selectEl || selectEl.dataset.swapped !== '1') return;
+    const next = selectEl.nextElementSibling;
+    const afterNext = next ? next.nextElementSibling : null;
+    if (next && next.tagName === 'INPUT') next.remove();
+    if (afterNext && afterNext.tagName === 'DATALIST') afterNext.remove();
+    selectEl.dataset.swapped = '0';
+    selectEl.style.display = '';
+  }
+
   const adr = {
     plz: form ? document.getElementById('adr_plz') : null,
     ort: form ? document.getElementById('adr_ort') : null,
@@ -273,15 +306,22 @@
     adr.plz.addEventListener('input', async () => {
       const v = (adr.plz.value || '').replace(/\D+/g,'').slice(0,5);
       adr.plz.value = v;
-      adr.ort.innerHTML = '<option value="">Bitte PLZ eingeben</option>'; adr.ort.disabled = true;
-      adr.str.innerHTML = '<option value="">Bitte Ort wählen</option>'; adr.str.disabled = true;
+      revertToSelect(adr.ort); adr.ort.innerHTML = '<option value="">Bitte PLZ eingeben</option>'; adr.ort.disabled = true;
+      revertToSelect(adr.str); adr.str.innerHTML = '<option value="">Bitte Ort wählen</option>'; adr.str.disabled = true;
       adr.hnr.value = ''; adr.hnr.disabled = true;
       adrReady = false; composeFull();
       if (v.length === 5) {
         setStatus('<i class="bi bi-arrow-repeat"></i> Lade Orte …');
         try {
           const data = await fetchLocalities(v);
-          if (!data.ok || !data.localities?.length) { setStatus('<i class="bi bi-x-circle"></i> Keine Orte zur PLZ gefunden.'); return; }
+          if (!data.ok || !data.localities?.length) { 
+          setStatus('<i class="bi bi-exclamation-circle"></i> Keine Orte via API gefunden – bitte Ort manuell eingeben.');
+          // swap to input fallback
+          const input = swapToInput(adr.ort, 'dl_orte', 'Ort eingeben');
+          input.disabled = false; input.addEventListener('input', () => { adr.str.disabled = false; composeFull(); });
+          adr.ort.disabled = false;
+          return; 
+        }
           adr.ort.innerHTML = '<option value="">Ort wählen</option>' + data.localities.map(o => `<option>${o}</option>`).join('');
           adr.ort.disabled = false;
           setStatus('<i class="bi bi-info-circle"></i> Ort wählen …');
@@ -290,14 +330,20 @@
     });
     adr.ort.addEventListener('change', async () => {
       const plz = adr.plz.value, city = adr.ort.value;
-      adr.str.innerHTML = '<option value="">Bitte Ort wählen</option>'; adr.str.disabled = true;
+      revertToSelect(adr.str); adr.str.innerHTML = '<option value="">Bitte Ort wählen</option>'; adr.str.disabled = true;
       adr.hnr.value = ''; adr.hnr.disabled = true;
       adrReady = false; composeFull();
       if (plz.length===5 && city) {
         setStatus('<i class="bi bi-arrow-repeat"></i> Lade Straßen …');
         try {
           const data = await fetchStreets(plz, city);
-          if (!data.ok || !data.streets?.length) { setStatus('<i class="bi bi-x-circle"></i> Keine Straßen gefunden.'); return; }
+          if (!data.ok || !data.streets?.length) { 
+          setStatus('<i class="bi bi-exclamation-circle"></i> Keine Straßen via API gefunden – bitte Straße manuell eingeben.');
+          const input = swapToInput(adr.str, 'dl_strassen', 'Straße eingeben');
+          input.disabled = false; input.addEventListener('input', () => { adr.hnr.disabled = !input.value; composeFull(); });
+          adr.str.disabled = false;
+          return; 
+        }
           adr.str.innerHTML = '<option value="">Straße wählen</option>' + data.streets.map(s => `<option>${s}</option>`).join('');
           adr.str.disabled = false;
           setStatus('<i class="bi bi-info-circle"></i> Straße wählen …');
