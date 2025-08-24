@@ -9,10 +9,7 @@ if (empty($_SESSION['csrf_token'])) { $_SESSION['csrf_token'] = bin2hex(random_b
       <img src="assets/img/logo.png" alt="BetterDeal">
     </a>
     <!-- Mobile/Tablet brand -->
-    <a class="navbar-brand d-flex d-lg-none align-items-center gap-2 brand-mobile" href="index.php" aria-label="BetterDeal">
-      <img src="assets/img/brand-haus-28.png" alt="" class="brand-mark" width="28" height="28">
-      <span class="fw-bold">BetterDeal</span>
-    </a>
+    <a class="navbar-brand d-flex d-lg-none align-items-center gap-2 brand-mobile" href="index.php" aria-label="BetterDeal"><img src="assets/img/brand-haus-28.png" class="brand-mark" width="28" height="28" alt=""><span class="fw-bold">BetterDeal</span></a>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Menü öffnen">
       <span class="navbar-toggler-icon"></span>

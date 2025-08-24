@@ -69,3 +69,11 @@ footer{border-top:1px solid #f1f5f9;padding:2rem 0;margin-top:3rem;}
 
 html,body{max-width:100%;overflow-x:hidden}
 img,svg,video,canvas,iframe{max-width:100%;height:auto;display:block}
+
+
+/* v18b: explicit mobile brand sizing & spacing */
+.brand-mobile .brand-mark{width:28px;height:28px;display:block}
+@media (max-width: 991.98px){
+  .navbar-brand{padding-top:.2rem;padding-bottom:.2rem}
+  .navbar{min-height:56px}
+}

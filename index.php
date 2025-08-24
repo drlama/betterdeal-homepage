@@ -27,7 +27,7 @@ if (empty($_SESSION['csrf_token'])) { $_SESSION['csrf_token'] = bin2hex(random_b
           <span class="text-dark">Und den Käufer!</span>
         </h1>
         <p class="lead text-muted">BetterDeal ist der Service für Eigentümer und Makler: Wir renovieren Ihr Objekt auf unsere Kosten, garantieren Ihnen einen Verkaufspreis – und Sie profitieren zusätzlich vom Mehrerlös.</p>
-        <button id="btnPreisrechnerHero2" class="btn btn-primary btn-lg mt-2"><i class="bi bi-calculator me-1"></i> Meinen Verkaufspreis ermitteln</button>
+        <button id="btnPreisrechnerHero2" type="button" class="btn btn-primary btn-lg mt-2" data-bs-toggle="modal" data-bs-target="#preisrechnerModal"><i class="bi bi-calculator me-1"></i> Meinen Verkaufspreis ermitteln</button>
       </div>
       <div class="col-lg-6">
         <div class="ratio ratio-16x9 rounded-4 border d-flex align-items-center justify-content-center text-muted">
@@ -120,7 +120,7 @@ if (empty($_SESSION['csrf_token'])) { $_SESSION['csrf_token'] = bin2hex(random_b
             <span class="badge rounded-pill calc-badge">Beispiel</span>
           </div>
           <div class="table-responsive">
-            <table class="calc-table">
+            <table class="calc-table table align-middle">
               <tbody>
                 <tr><td>Wunschpreis</td><td>300.000,00&nbsp;€</td><td class="calc-note">nicht realisierbar</td></tr>
                 <tr><td>BetterDeal Ankaufspreis</td><td>280.000,00&nbsp;€</td><td class="calc-note">Garantiert</td></tr>

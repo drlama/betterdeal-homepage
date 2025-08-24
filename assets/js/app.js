@@ -6,6 +6,9 @@
   const modal = new bootstrap.Modal(modalEl);
   const btnOpenList = [document.getElementById('btnPreisrechnerHero2')];
   btnOpenList.forEach(btn => btn && btn.addEventListener('click', () => modal.show()));
+  // also attach to any element marked for price wizard
+  document.querySelectorAll('[data-price-wizard]').forEach(btn => btn.addEventListener('click', () => modal.show()));
+
 
   const steps = Array.from(modalEl.querySelectorAll('.wizard-step'));
   const stepsNav = Array.from(modalEl.querySelectorAll('.wizard-steps li'));
