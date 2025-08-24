@@ -21,8 +21,7 @@ if (empty($_SESSION['csrf_token'])) { $_SESSION['csrf_token'] = bin2hex(random_b
     <div class="row align-items-center g-4">
       <div class="col-lg-6">
         <div class="hero-badge mb-3"><i class="bi bi-magic"></i> Verkaufen trotz Sanierungsstau</div>
-        <h1 class="display-5 fw-bold mb-3">Ihre Immobilie verkauft sich nicht?<br><span class="text-bd">Wir haben die Lösung.</span></h1>
-        <p class="h4 fw-semibold text-bd mt-2">Und den Käufer!</p>
+        <h1 class="display-5 fw-bold mb-3">Ihre Immobilie verkauft sich nicht?<br><span class="text-bd">Wir haben die Lösung.</span><br><span class="text-dark">Und den Käufer!</span></h1>
         <p class="lead text-muted">BetterDeal ist der Service für Eigentümer und Makler: Wir renovieren Ihr Objekt auf unsere Kosten, garantieren Ihnen einen Verkaufspreis – und Sie profitieren zusätzlich vom Mehrerlös.</p>
         <div class="d-flex gap-2 mt-3">
           <button id="btnPreisrechnerHero2" class="btn btn-primary btn-lg"><i class="bi bi-calculator me-1"></i> Preisrechner starten</button>
@@ -76,6 +75,37 @@ if (empty($_SESSION['csrf_token'])) { $_SESSION['csrf_token'] = bin2hex(random_b
 </section>
 
 <!-- NEW: BetterDeal – nur mit Makler -->
+<section class="py-5" id="funktioniert">
+  <div class="container">
+    <div class="text-center section-kicker mb-1">Ablauf</div>
+    <h2 class="text-center section-title mb-2">So funktioniert <span class="brand-underline">BetterDeal</span></h2>
+    <p class="text-center text-muted mb-4">Schnell erklärt in drei Schritten</p>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card h-100 shadow-sm border-0 card-hover"><div class="card-body">
+          <div class="mb-2"><i class="bi bi-1-circle fs-3 text-bd"></i></div>
+          <h5 class="card-title mb-2">1) Garantierter Verkaufspreis</h5>
+          <p class="mb-0">Im Preisrechner Daten eingeben – Sie erhalten sofort Ihren garantierten Verkaufspreis.</p>
+        </div></div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 shadow-sm border-0 card-hover"><div class="card-body">
+          <div class="mb-2"><i class="bi bi-2-circle fs-3 text-bd"></i></div>
+          <h5 class="card-title mb-2">2) Renovierung</h5>
+          <p class="mb-0">Wir modernisieren das Objekt und bereiten den Verkauf topmodern auf – transparent und effizient.</p>
+        </div></div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 shadow-sm border-0 card-hover"><div class="card-body">
+          <div class="mb-2"><i class="bi bi-3-circle fs-3 text-bd"></i></div>
+          <h5 class="card-title mb-2">3) Verkauf & Bonus</h5>
+          <p class="mb-0">Verkauf zum bestmöglichen Preis – vom Mehrerlös erhalten Sie zusätzlich einen Bonus.</p>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="py-5" id="nur-mit-makler">
   <div class="container">
     <h2 class="text-center section-title mb-2"><span class="brand-underline">BetterDeal</span> – nur mit Makler</h2>
@@ -107,37 +137,6 @@ if (empty($_SESSION['csrf_token'])) { $_SESSION['csrf_token'] = bin2hex(random_b
             <p class="mb-0">Der Makler führt Besichtigungen vor Ort durch und hilft bei der Koordination der Handwerker.</p>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="py-5" id="funktioniert">
-  <div class="container">
-    <div class="text-center section-kicker mb-1">Ablauf</div>
-    <h2 class="text-center section-title mb-2">So funktioniert <span class="brand-underline">BetterDeal</span></h2>
-    <p class="text-center text-muted mb-4">Schnell erklärt in drei Schritten</p>
-    <div class="row g-4">
-      <div class="col-md-4">
-        <div class="card h-100 shadow-sm border-0 card-hover"><div class="card-body">
-          <div class="mb-2"><i class="bi bi-1-circle fs-3 text-bd"></i></div>
-          <h5 class="card-title mb-2">1) Garantierter Verkaufspreis</h5>
-          <p class="mb-0">Im Preisrechner Daten eingeben – Sie erhalten sofort Ihren garantierten Verkaufspreis.</p>
-        </div></div>
-      </div>
-      <div class="col-md-4">
-        <div class="card h-100 shadow-sm border-0 card-hover"><div class="card-body">
-          <div class="mb-2"><i class="bi bi-2-circle fs-3 text-bd"></i></div>
-          <h5 class="card-title mb-2">2) Renovierung</h5>
-          <p class="mb-0">Wir modernisieren das Objekt und bereiten den Verkauf topmodern auf – transparent und effizient.</p>
-        </div></div>
-      </div>
-      <div class="col-md-4">
-        <div class="card h-100 shadow-sm border-0 card-hover"><div class="card-body">
-          <div class="mb-2"><i class="bi bi-3-circle fs-3 text-bd"></i></div>
-          <h5 class="card-title mb-2">3) Verkauf & Bonus</h5>
-          <p class="mb-0">Verkauf zum bestmöglichen Preis – vom Mehrerlös erhalten Sie zusätzlich einen Bonus.</p>
-        </div></div>
       </div>
     </div>
   </div>

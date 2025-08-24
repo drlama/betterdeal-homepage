@@ -16,7 +16,6 @@ if (empty($_SESSION['csrf_token'])) { $_SESSION['csrf_token'] = bin2hex(random_b
         <li class="nav-item"><a class="nav-link" href="index.php#funktioniert">So funktioniert's</a></li>
         <li class="nav-item"><a class="nav-link" href="makler.php">Informationen für Makler</a></li>
         <li class="nav-item"><a class="nav-link" href="index.php#kontakt">Kontakt</a></li>
-        <li class="nav-item ms-2"><button id="btnPreisrechnerHero" class="btn btn-primary"><i class="bi bi-stars me-1"></i> BetterDeal-Preisrechner</button></li>
       </ul>
     </div>
   </div>
