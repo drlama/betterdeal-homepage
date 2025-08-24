@@ -24,7 +24,7 @@ if (empty($_SESSION['csrf_token'])) { $_SESSION['csrf_token'] = bin2hex(random_b
         <h1 class="display-5 fw-bold mb-3">Ihre Immobilie verkauft sich nicht?<br><span class="text-bd">Wir haben die Lösung.</span><br><span class="text-dark">Und den Käufer!</span></h1>
         <p class="lead text-muted">BetterDeal ist der Service für Eigentümer und Makler: Wir renovieren Ihr Objekt auf unsere Kosten, garantieren Ihnen einen Verkaufspreis – und Sie profitieren zusätzlich vom Mehrerlös.</p>
         <div class="d-flex gap-2 mt-3">
-          <button id="btnPreisrechnerHero2" class="btn btn-primary btn-lg"><i class="bi bi-calculator me-1"></i> Preisrechner starten</button>
+          <button id="btnPreisrechnerHero2" class="btn btn-primary btn-lg"><i class="bi bi-calculator me-1"></i> Meinen Verkaufspreis ermitteln</button>
         </div>
       </div>
       <div class="col-lg-6">

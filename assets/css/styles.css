@@ -53,3 +53,18 @@ footer a:hover{text-decoration:underline;}
 .card-hover:hover{ transform: translateY(-4px); box-shadow: 0 12px 28px rgba(2,8,23,.08); }
 .section-kicker{ letter-spacing:.06em; text-transform:uppercase; color:#94a3b8; font-weight:700; font-size:.8rem; }
 .section-title{ font-weight:800; }
+
+
+/* brand primary button */
+.btn-primary{
+  background-color: var(--bd-primary);
+  border-color: var(--bd-primary);
+}
+.btn-primary:hover, .btn-primary:focus{
+  background-color: #c74a0a;
+  border-color: #c74a0a;
+}
+.btn-primary:active, .btn-primary.active{
+  background-color: #b54309;
+  border-color: #b54309;
+}
