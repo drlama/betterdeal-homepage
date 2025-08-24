@@ -40,3 +40,16 @@ footer a:hover{text-decoration:underline;}
 .segment .seg .bi{font-size:1.5rem;color:var(--bd-muted);margin-bottom:.25rem;}
 .btn-check:checked + .seg{border-color:var(--bd-primary);box-shadow:0 0 0 .25rem rgba(234,88,12,.12);}
 @media (max-width:575.98px){.segment{grid-template-columns:1fr;}}
+
+
+/* --- Modern accents v17a --- */
+.brand-underline{
+  color: var(--bd-primary)!important;
+  background: linear-gradient(180deg, rgba(234,88,12,0) 60%, rgba(234,88,12,.18) 0);
+  border-radius: 4px;
+  padding: 0 .15em;
+}
+.card-hover{ transition: transform .25s ease, box-shadow .25s ease; }
+.card-hover:hover{ transform: translateY(-4px); box-shadow: 0 12px 28px rgba(2,8,23,.08); }
+.section-kicker{ letter-spacing:.06em; text-transform:uppercase; color:#94a3b8; font-weight:700; font-size:.8rem; }
+.section-title{ font-weight:800; }

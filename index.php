@@ -14,24 +14,7 @@ if (empty($_SESSION['csrf_token'])) { $_SESSION['csrf_token'] = bin2hex(random_b
   <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-<nav class="navbar navbar-expand-md bg-white sticky-top border-bottom">
-  <div class="container">
-    <a class="navbar-brand d-flex align-items-center" href="/" aria-label="BetterDeal">
-      <img src="assets/img/logo.png" alt="BetterDeal">
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div id="nav" class="collapse navbar-collapse">
-      <ul class="navbar-nav ms-auto align-items-center gap-2">
-        <li class="nav-item"><a class="nav-link" href="#warum">Warum BetterDeal?</a></li>
-        <li class="nav-item"><a class="nav-link" href="#funktioniert">So funktioniert's</a></li>
-        <li class="nav-item"><a class="nav-link" href="#kontakt">Kontakt</a></li>
-        <li class="nav-item ms-2"><button id="btnPreisrechnerHero" class="btn btn-primary"><i class="bi bi-stars me-1"></i> BetterDeal-Preisrechner</button></li>
-      </ul>
-    </div>
-  </div>
-</nav>
+<?php include 'includes/header.php'; ?>
 
 <header class="hero">
   <div class="container">
@@ -57,11 +40,12 @@ if (empty($_SESSION['csrf_token'])) { $_SESSION['csrf_token'] = bin2hex(random_b
 
 <section class="py-5" id="warum">
   <div class="container">
-    <h2 class="text-center fw-bold mb-2">Warum BetterDeal?</h2>
+    <div class="text-center section-kicker mb-1">Warum</div>
+    <h2 class="text-center section-title mb-2">Warum <span class="brand-underline">BetterDeal</span>?</h2>
     <p class="text-center text-muted mb-4">Maximaler Verkaufserlös ohne Aufwand für Sie</p>
     <div class="row g-4">
       <div class="col-md-4">
-        <div class="card h-100 shadow-sm border-0">
+        <div class="card h-100 shadow-sm border-0 card-hover">
           <div class="card-body">
             <div class="mb-2"><i class="bi bi-shield-check fs-3 text-bd"></i></div>
             <h5 class="card-title mb-2">Garantierter Verkaufspreis</h5>
@@ -70,7 +54,7 @@ if (empty($_SESSION['csrf_token'])) { $_SESSION['csrf_token'] = bin2hex(random_b
         </div>
       </div>
       <div class="col-md-4">
-        <div class="card h-100 shadow-sm border-0">
+        <div class="card h-100 shadow-sm border-0 card-hover">
           <div class="card-body">
             <div class="mb-2"><i class="bi bi-hammer fs-3 text-bd"></i></div>
             <h5 class="card-title mb-2">Renovierung auf unsere Kosten</h5>
@@ -79,7 +63,7 @@ if (empty($_SESSION['csrf_token'])) { $_SESSION['csrf_token'] = bin2hex(random_b
         </div>
       </div>
       <div class="col-md-4">
-        <div class="card h-100 shadow-sm border-0">
+        <div class="card h-100 shadow-sm border-0 card-hover">
           <div class="card-body">
             <div class="mb-2"><i class="bi bi-graph-up-arrow fs-3 text-bd"></i></div>
             <h5 class="card-title mb-2">Verkauf mit Bonus</h5>
@@ -94,11 +78,11 @@ if (empty($_SESSION['csrf_token'])) { $_SESSION['csrf_token'] = bin2hex(random_b
 <!-- NEW: BetterDeal – nur mit Makler -->
 <section class="py-5" id="nur-mit-makler">
   <div class="container">
-    <h2 class="text-center fw-bold mb-2">BetterDeal – nur mit Makler</h2>
+    <h2 class="text-center section-title mb-2"><span class="brand-underline">BetterDeal</span> – nur mit Makler</h2>
     <p class="text-center text-muted mb-4">Um Ihre Immobilie mit BetterDeal zu verkaufen benötigen Sie einen Makler, dem Sie vertrauen. Haben Sie keinen, empfehlen wir Ihnen gern einen.</p>
     <div class="row g-4">
       <div class="col-md-4">
-        <div class="card h-100 shadow-sm border-0">
+        <div class="card h-100 shadow-sm border-0 card-hover">
           <div class="card-body">
             <div class="mb-2"><i class="bi bi-people fs-3 text-bd"></i></div>
             <h5 class="card-title mb-2">Verständlich erklärt</h5>
@@ -107,7 +91,7 @@ if (empty($_SESSION['csrf_token'])) { $_SESSION['csrf_token'] = bin2hex(random_b
         </div>
       </div>
       <div class="col-md-4">
-        <div class="card h-100 shadow-sm border-0">
+        <div class="card h-100 shadow-sm border-0 card-hover">
           <div class="card-body">
             <div class="mb-2"><i class="bi bi-file-earmark-text fs-3 text-bd"></i></div>
             <h5 class="card-title mb-2">Verträge & Begleitung</h5>
@@ -116,7 +100,7 @@ if (empty($_SESSION['csrf_token'])) { $_SESSION['csrf_token'] = bin2hex(random_b
         </div>
       </div>
       <div class="col-md-4">
-        <div class="card h-100 shadow-sm border-0">
+        <div class="card h-100 shadow-sm border-0 card-hover">
           <div class="card-body">
             <div class="mb-2"><i class="bi bi-tools fs-3 text-bd"></i></div>
             <h5 class="card-title mb-2">Vor Ort & Umsetzung</h5>
@@ -130,25 +114,26 @@ if (empty($_SESSION['csrf_token'])) { $_SESSION['csrf_token'] = bin2hex(random_b
 
 <section class="py-5" id="funktioniert">
   <div class="container">
-    <h2 class="text-center fw-bold mb-2">So funktioniert <span class="text-bd">BetterDeal</span></h2>
+    <div class="text-center section-kicker mb-1">Ablauf</div>
+    <h2 class="text-center section-title mb-2">So funktioniert <span class="brand-underline">BetterDeal</span></h2>
     <p class="text-center text-muted mb-4">Schnell erklärt in drei Schritten</p>
     <div class="row g-4">
       <div class="col-md-4">
-        <div class="card h-100 shadow-sm border-0"><div class="card-body">
+        <div class="card h-100 shadow-sm border-0 card-hover"><div class="card-body">
           <div class="mb-2"><i class="bi bi-1-circle fs-3 text-bd"></i></div>
           <h5 class="card-title mb-2">1) Garantierter Verkaufspreis</h5>
           <p class="mb-0">Im Preisrechner Daten eingeben – Sie erhalten sofort Ihren garantierten Verkaufspreis.</p>
         </div></div>
       </div>
       <div class="col-md-4">
-        <div class="card h-100 shadow-sm border-0"><div class="card-body">
+        <div class="card h-100 shadow-sm border-0 card-hover"><div class="card-body">
           <div class="mb-2"><i class="bi bi-2-circle fs-3 text-bd"></i></div>
           <h5 class="card-title mb-2">2) Renovierung</h5>
           <p class="mb-0">Wir modernisieren das Objekt und bereiten den Verkauf topmodern auf – transparent und effizient.</p>
         </div></div>
       </div>
       <div class="col-md-4">
-        <div class="card h-100 shadow-sm border-0"><div class="card-body">
+        <div class="card h-100 shadow-sm border-0 card-hover"><div class="card-body">
           <div class="mb-2"><i class="bi bi-3-circle fs-3 text-bd"></i></div>
           <h5 class="card-title mb-2">3) Verkauf & Bonus</h5>
           <p class="mb-0">Verkauf zum bestmöglichen Preis – vom Mehrerlös erhalten Sie zusätzlich einen Bonus.</p>
@@ -199,17 +184,7 @@ if (empty($_SESSION['csrf_token'])) { $_SESSION['csrf_token'] = bin2hex(random_b
   </div>
 </section>
 
-<footer>
-  <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
-    <div>© <?php echo date('Y'); ?> BetterDeal – Wir renovieren. Sie profitieren.</div>
-    <div class="d-flex gap-3">
-      <a href="impressum.php">Impressum</a>
-      <a href="agb.php">AGB</a>
-      <a href="widerruf.php">Widerruf</a>
-    </div>
-  </div>
-</footer>
-
+<?php include 'includes/footer.php'; ?>
 <?php include 'wizard-modal.php'; ?>
 
 <script>
