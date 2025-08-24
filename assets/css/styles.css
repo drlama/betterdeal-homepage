@@ -176,3 +176,25 @@ img,svg,video,canvas,iframe{max-width:100%; height:auto; display:block;}
 @media (min-width: 992px){
   .navbar-brand img{height:90px;}
 }
+
+
+/* ===== v17i tuning ===== */
+
+/* Logo: smaller on phones, moderate on desktop */
+.navbar-brand img{ height:36px; }              /* phones */
+@media (min-width: 576px){ .navbar-brand img{ height:48px; } }   /* tablets */
+@media (min-width: 992px){ .navbar-brand img{ height:72px; } }   /* desktop */
+
+/* Hero width & spacing: avoid stretched look on very wide screens */
+.hero .container{ max-width: 1140px; }
+.hero .row{ row-gap: 1.5rem; }
+.hero h1{ line-height:1.15; font-size:clamp(1.75rem, 1.2vw + 1.4rem, 2.6rem); }
+.hero .lead{ max-width: 60ch; }
+
+/* Ratio box: cap desktop height so it doesn't look empty when no video yet */
+@media (min-width: 992px){
+  .hero .ratio{ max-height: 420px; }
+}
+
+/* Section headings spacing */
+.section-title{ margin-bottom: .75rem; }
