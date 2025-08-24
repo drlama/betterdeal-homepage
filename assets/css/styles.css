@@ -92,3 +92,87 @@ footer a:hover{text-decoration:underline;}
 /* fix navbar toggler icon visibility when using custom bg */
 .navbar-light .navbar-toggler{ border-color: rgba(0,0,0,.1); }
 .navbar-light .navbar-toggler-icon{ background-image: var(--bs-navbar-toggler-icon-bg); }
+
+
+/* --- Make ALL buttons orange (brand) --- */
+:root{ --bd-primary:#ea580c; }
+.btn,
+.btn-primary, .btn-secondary, .btn-success, .btn-info, .btn-warning, .btn-danger, .btn-dark, .btn-light {
+  background-color: var(--bd-primary) !important;
+  border-color: var(--bd-primary) !important;
+  color: #fff !important;
+}
+.btn:hover, .btn:focus,
+.btn-primary:hover, .btn-secondary:hover, .btn-success:hover, .btn-info:hover, .btn-warning:hover, .btn-danger:hover, .btn-dark:hover, .btn-light:hover,
+.btn-primary:focus, .btn-secondary:focus, .btn-success:focus, .btn-info:focus, .btn-warning:focus, .btn-danger:focus, .btn-dark:focus, .btn-light:focus {
+  background-color: #c74a0a !important;
+  border-color: #c74a0a !important;
+  color: #fff !important;
+}
+.btn:active, .btn.active,
+.btn-primary:active, .btn-secondary:active, .btn-success:active, .btn-info:active, .btn-warning:active, .btn-danger:active, .btn-dark:active, .btn-light:active {
+  background-color: #b54309 !important;
+  border-color: #b54309 !important;
+  color: #fff !important;
+}
+/* Outline variants */
+.btn-outline-primary, .btn-outline-secondary, .btn-outline-success, .btn-outline-info, .btn-outline-warning, .btn-outline-danger, .btn-outline-dark, .btn-outline-light {
+  color: var(--bd-primary) !important;
+  border-color: var(--bd-primary) !important;
+  background-color: transparent !important;
+}
+.btn-outline-primary:hover, .btn-outline-secondary:hover, .btn-outline-success:hover, .btn-outline-info:hover, .btn-outline-warning:hover, .btn-outline-danger:hover, .btn-outline-dark:hover, .btn-outline-light:hover,
+.btn-outline-primary:focus, .btn-outline-secondary:focus, .btn-outline-success:focus, .btn-outline-info:focus, .btn-outline-warning:focus, .btn-outline-danger:focus, .btn-outline-dark:focus, .btn-outline-light:focus {
+  color: #fff !important;
+  background-color: var(--bd-primary) !important;
+  border-color: var(--bd-primary) !important;
+}
+/* Link buttons */
+.btn-link { color: var(--bd-primary) !important; }
+.btn-link:hover, .btn-link:focus { color: #c74a0a !important; }
+/* Disabled look (slightly muted) */
+.btn:disabled, .btn.disabled {
+  background-color: #f08b51 !important;
+  border-color: #f08b51 !important;
+  color: #fff !important;
+  opacity: .85;
+}
+
+
+/* ===== Responsive hardening (v17h) ===== */
+*{box-sizing:border-box;}
+html,body{max-width:100%; overflow-x:hidden;}
+img,svg,video,canvas,iframe{max-width:100%; height:auto; display:block;}
+.container, .container-fluid{max-width:100%;}
+
+/* Headline scales smoothly on small screens */
+.hero h1{
+  line-height:1.15;
+  font-size:clamp(1.6rem, 2.5vw + 1.2rem, 2.75rem); /* mobile -> desktop */
+}
+.lead{font-size:clamp(1rem, 1vw + .85rem, 1.25rem);}
+
+/* Fix gutters to avoid accidental horizontal scroll */
+.row{--bs-gutter-x: 1rem;}
+
+/* Ensure ratio boxes never overflow */
+.ratio{width:100%;}
+
+/* Cards spacing on mobile */
+@media (max-width: 575.98px){
+  .section-title{font-size:1.6rem;}
+  .card .card-body{padding:1rem;}
+  .hero{padding:1.75rem 0;}
+  .navbar-brand img{height:48px;}
+}
+
+/* Tablet improvements */
+@media (min-width: 576px) and (max-width: 991.98px){
+  .section-title{font-size:2rem;}
+  .hero{padding:2.25rem 0;}
+}
+
+/* Desktop keeps the larger logo */
+@media (min-width: 992px){
+  .navbar-brand img{height:90px;}
+}

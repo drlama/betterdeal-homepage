@@ -28,7 +28,7 @@ if (empty($_SESSION['csrf_token'])) { $_SESSION['csrf_token'] = bin2hex(random_b
         </div>
       </div>
       <div class="col-lg-6 order-2 order-lg-2">
-        <div class="ratio ratio-16x9 rounded-4 border">
+        <div class="ratio ratio-16x9 rounded-4 border img-fluid">
           <!-- YouTube-Video hier einbetten -->
           <div class="d-flex align-items-center justify-content-center text-muted">Video</div>
         </div>
