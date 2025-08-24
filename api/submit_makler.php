@@ -18,7 +18,7 @@ $isNew = !file_exists($path);
 $fh = fopen($path, 'a'); if ($isNew) { fputcsv($fh, array_keys($fields)); } fputcsv($fh, array_values($fields)); fclose($fh);
 
 // Try to send an email (adjust recipient as needed)
-$to = 'info@propertee.de'; // TODO: bei Bedarf anpassen
+$to = 'info@propertee.de';
 $subject = 'Neue Makler-Registrierung (BetterDeal)';
 $body = "Neue Registrierung:\n\nName/Firma: $name\nAdresse: $adresse\nE-Mail: $email\nTelefon: $telefon\n";
 $headers = "From: no-reply@betterdeal.local\r\nReply-To: $email\r\n";

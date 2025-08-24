@@ -4,13 +4,13 @@ if (empty($_SESSION['csrf_token'])) { $_SESSION['csrf_token'] = bin2hex(random_b
 ?>
 <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top border-bottom">
   <div class="container">
-    <!-- Desktop brand (unchanged) -->
+    <!-- Desktop brand -->
     <a class="navbar-brand d-none d-lg-flex align-items-center brand-desktop" href="index.php" aria-label="BetterDeal">
       <img src="assets/img/logo.png" alt="BetterDeal">
     </a>
-    <!-- Mobile/Tablet brand (compact) -->
+    <!-- Mobile/Tablet brand -->
     <a class="navbar-brand d-flex d-lg-none align-items-center gap-2 brand-mobile" href="index.php" aria-label="BetterDeal">
-      <i class="bi bi-graph-up-arrow text-bd fs-4"></i>
+      <img src="assets/img/brand-haus-28.png" alt="" class="brand-mark" width="28" height="28">
       <span class="fw-bold">BetterDeal</span>
     </a>
 

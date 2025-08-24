@@ -11,10 +11,15 @@ if (empty($_SESSION['csrf_token'])) { $_SESSION['csrf_token'] = bin2hex(random_b
 <body class="bg-white">
 <?php include 'includes/header.php'; ?>
 <div class="container py-5">
+
 <h1 class="mb-4">Impressum</h1>
-<p><strong>PROPERTEE Real Estate GmbH</strong><br>Bombardierstraße 7, 82031 Grünwald<br>Telefon: +49 (0) 89 945 089 56-0<br>E-Mail: info@propertee.de</p>
-<p>Geschäftsführer: Michael Schmidt<br>Registergericht: Amtsgericht München<br>HRB: 123456<br>USt-IdNr.: DE123456789</p>
-<p><a href="index.php" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Zurück</a></p>
+<p><strong>PROPERTEE Real Estate GmbH</strong><br>
+Bombardierstraße 7<br>82031 Grünwald</p>
+<p><strong>Telefon:</strong> +49 (0) 89 945 089 56-0<br>
+<strong>E‑Mail:</strong> info@propertee.de</p>
+<p><strong>Geschäftsführung:</strong> –<br>
+<strong>Registergericht:</strong> –</p>
+
 </div>
 <?php include 'includes/footer.php'; ?>
 </body></html>

@@ -11,6 +11,7 @@ if (empty($_SESSION['csrf_token'])) { $_SESSION['csrf_token'] = bin2hex(random_b
 <body class="bg-white">
 <?php include 'includes/header.php'; ?>
 <div class="container py-5">
+
 <section class="py-5">
   <div class="container">
     <div class="row g-5 align-items-center">
@@ -96,13 +97,14 @@ document.getElementById('maklerForm').addEventListener('submit', async function(
   if(!form.checkValidity()){ form.classList.add('was-validated'); return; }
   const fd = new FormData(form);
   try{
-    const r = await fetch('api/submit_makler.php', { method:'POST', headers:{'X-CSRF-Token': CSRF_TOKEN}, body: fd });
+    const r = await fetch('api/submit_makler.php', { method:'POST', headers:{'X-CSRF-Token': '<?php echo $_SESSION['csrf_token']; ?>'}, body: fd });
     const data = await r.json();
     if(data.ok){ alert('Vielen Dank! Wir haben Ihre Registrierung erhalten.'); form.reset(); }
     else { alert('Fehler: ' + (data.error || 'Unbekannt')); }
   }catch(err){ alert('Netzwerkfehler: ' + err.message); }
 });
 </script>
+
 </div>
 <?php include 'includes/footer.php'; ?>
 </body></html>

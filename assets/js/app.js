@@ -1,186 +1,187 @@
 
-(function(){
+(() => {
   const modalEl = document.getElementById('preisrechnerModal');
-  const modal = new bootstrap.Modal(modalEl);
-  const openButtons = [document.getElementById('btnPreisrechnerHero'), document.getElementById('btnPreisrechnerHero2')].filter(Boolean);
-  openButtons.forEach(btn => btn.addEventListener('click', () => { resetWizard(); modal.show(); }));
+  if(!modalEl) return;
 
-  const form = document.getElementById('preisrechnerForm');
-  const btnWeiter = document.getElementById('btnWeiter');
-  const btnSenden = document.getElementById('btnSenden');
-  const btnZurueck = document.getElementById('btnZurueck');
-  const wizardProgress = document.getElementById('wizardProgress');
-  const objektartError = document.getElementById('objektartError');
-  const basisHeading = document.getElementById('basisHeading');
-  let step = 1; const totalSteps = 5; const LS_KEY = 'bd_price_wizard_v16';
+  const modal = new bootstrap.Modal(modalEl);
+  const btnOpenList = [document.getElementById('btnPreisrechnerHero2')];
+  btnOpenList.forEach(btn => btn && btn.addEventListener('click', () => modal.show()));
+
+  const steps = Array.from(modalEl.querySelectorAll('.wizard-step'));
+  const stepsNav = Array.from(modalEl.querySelectorAll('.wizard-steps li'));
+  let step = 0;
+
+  const liveSummary = modalEl.querySelector('#liveSummary');
+  const state = { address:{}, typ:'wohnung', fields:{} };
 
   function setStep(n){
-    step=n;
-    document.querySelectorAll('.wizard-step').forEach(s=>s.classList.add('d-none'));
-    document.querySelector(`.wizard-step[data-step="${n}"]`).classList.remove('d-none');
-    btnZurueck.disabled = (step===1);
-    btnSenden.classList.toggle('d-none', step!==totalSteps);
-    btnWeiter.classList.toggle('d-none', step===totalSteps);
-    wizardProgress.style.width = (step*100/totalSteps)+'%';
-    document.querySelectorAll('.wizard-steps .step').forEach(el=>{
-      const s=parseInt(el.getAttribute('data-step'),10);
-      el.classList.toggle('active', s===step);
-      el.classList.toggle('done', s<step);
-    });
-    if (step===totalSteps) renderSummary();
+    step = Math.max(0, Math.min(steps.length-1, n));
+    steps.forEach((s,i) => s.classList.toggle('d-none', i!==step));
+    stepsNav.forEach((li,i) => li.classList.toggle('active', i===step));
+    modalEl.querySelector('#btnBack').disabled = step===0;
+    modalEl.querySelector('#btnNext').textContent = (step===steps.length-1?'Schließen': (step===steps.length-2 ? 'Absenden' : 'Weiter'));
   }
 
-  function resetWizard(){
-    form.reset(); setStep(1);
-    document.querySelectorAll('.segment .seg').forEach(c=>c.classList.remove('active'));
-    objektartError && (objektartError.classList.add('d-none'));
-    toggleTypeFields(); autosave();
+  function summaryRender(){
+    const rows = [];
+    const addr = [state.address.strasse, state.address.hausnr, state.address.plz, state.address.ort].filter(Boolean).join(' ');
+    rows.push(['Adresse', addr || '–']);
+    rows.push(['Objektart', state.typ || '–']);
+    if(state.fields.baujahr) rows.push(['Baujahr', state.fields.baujahr]);
+    if(state.fields.flaeche) rows.push(['Fläche', state.fields.flaeche + ' m²']);
+    if(state.fields.grundstueck) rows.push(['Grundstück', state.fields.grundstueck + ' m²']);
+    if(state.fields.energie) rows.push(['Energie', state.fields.energie]);
+    liveSummary.innerHTML = rows.map(([k,v]) => `<dt class="col-6">${k}</dt><dd class="col-6 text-end">${v}</dd>`).join('');
   }
 
-  document.addEventListener('change', e=>{
-    const t=e.target;
-    if(t.matches('.btn-check[name="objektart"]')){
-      document.querySelectorAll('.segment .seg').forEach(c=>c.classList.remove('active'));
-      t.closest('label').querySelector('.seg').classList.add('active');
-      objektartError && objektartError.classList.add('d-none');
-      toggleTypeFields(); autosave();
-    }
-  });
-  form && form.addEventListener('input', autosave);
+  // Address step
+  const plz = modalEl.querySelector('#plz');
+  const ortSelect = modalEl.querySelector('#ortSelect');
+  const reloadOrte = modalEl.querySelector('#reloadOrte');
+  const strasseSelect = modalEl.querySelector('#strasseSelect');
+  const btnManuelleStrasse = modalEl.querySelector('#btnManuelleStrasse');
+  const hausnr = modalEl.querySelector('#hausnr');
 
-  function toggleTypeFields(){
-    const art=getValue('objektart'); const isHaus=art==='haus'; const isMFH=art==='mehrfamilienhaus'; const isWhg=art==='wohnung';
-    if(basisHeading){ basisHeading.textContent = isMFH ? 'Mehrfamilienhaus-Spezifikation' : isHaus ? 'Haus-Spezifikation' : isWhg ? 'Details zur Wohnung' : 'Basisdaten'; }
-    show('fieldGrundstueck',isHaus); req('b_grundstueck',isHaus);
-    show('fieldWE',isMFH); req('b_we',isMFH);
-    show('fieldGesamtWF',isMFH); req('b_gesamtwf',isMFH);
-    show('fieldWohnflaeche',!isMFH); req('b_wohnflaeche',!isMFH);
-    document.getElementById('ausstattungWhgHaus').classList.toggle('d-none',isMFH);
-    document.getElementById('ausstattungMFH').classList.toggle('d-none',!isMFH);
-  }
-  function show(id,v){ const el=document.getElementById(id); if(el) el.classList.toggle('d-none',!v); }
-  function req(name,v){ const el=form.elements[name]; if(el) el.required=!!v; }
-  function getValue(name){ const el=form.elements[name]; if(!el) return ''; if(el.type==='radio'){ const r=form.querySelector(`input[name="${name}"]:checked`); return r? r.value : '';} return el.value||''; }
-  function autosave(){ const data={}; Array.from(form.elements).forEach(el=>{ if(!el.name) return; if(el.type==='radio'){ if(el.checked) data[el.name]=el.value; } else data[el.name]=el.value; }); localStorage.setItem(LS_KEY, JSON.stringify(data)); }
-
-  function renderSummary(){
-    const art=getValue('objektart');
-    const labelsBase={adresse:'Adresse', objektart:'Objektart', b_baujahr:'Baujahr', b_modernisierung:'Modernisierungsjahr', b_energie:'Energie-Label'};
-    const labelsWhgHaus={b_wohnflaeche:'Wohnfläche (m²)', a_zimmer:'Zimmer', a_baeder:'Bäder', a_balkon:'Balkon/Terrasse (m²)', a_garten:'Garten (m²)', a_garagen:'Garagenplätze', a_park:'Außenparkplätze', a_waerme:'Wärmeerzeugung'};
-    const labelsHausOnly={b_grundstueck:'Grundstück (m²)'};
-    const labelsMFH={b_we:'Wohneinheiten', b_gesamtwf:'Gesamtwohnfläche (m²)', m_netto_miete:'Nettomiete p.a. (EUR)'};
-    const finalLabels = Object.assign({}, labelsBase);
-    if(art==='mehrfamilienhaus') Object.assign(finalLabels, labelsMFH);
-    else { Object.assign(finalLabels, labelsWhgHaus); if(art==='haus') Object.assign(finalLabels, labelsHausOnly); }
-    const list=document.getElementById('summaryList'); list.innerHTML='';
-    Object.entries(finalLabels).forEach(([k,label])=>{ const v=getValue(k); if(v==='') return; const item=document.createElement('div'); item.className='list-group-item d-flex justify-content-between'; item.innerHTML=`<span class="text-muted">${label}</span><strong>${v}</strong>`; list.appendChild(item); });
-  }
-
-  if(btnWeiter) btnWeiter.addEventListener('click', ()=>{
-    if(step===1){ setStep(2); return; }
-    if(step===2){ const selected=getValue('objektart'); if(!selected){ objektartError && objektartError.classList.remove('d-none'); return; } toggleTypeFields(); setStep(3); return; }
-    if(step===3){ if(!form.checkValidity()){ form.classList.add('was-validated'); return; } setStep(4); return; }
-    if(step===4){ setStep(5); return; }
-  });
-  if(btnZurueck) btnZurueck.addEventListener('click', ()=>{ if(step>1) setStep(step-1); });
-
-  if(form) form.addEventListener('submit', async (event)=>{
-    document.querySelectorAll('[required]').forEach(el=>{ if(el.closest('.d-none')) el.dataset.requiredWas='1', el.required=false; });
-    if(!form.checkValidity()){ event.preventDefault(); event.stopPropagation(); form.classList.add('was-validated'); document.querySelectorAll('[data-required-was="1"]').forEach(el=>{ el.required=true; delete el.dataset.requiredWas; }); return; }
-    event.preventDefault(); event.stopPropagation();
-    const fd=new FormData(form); fd.append('ts', new Date().toISOString());
+  async function fetchOrte(){
+    const code = (plz.value||'').trim();
+    ortSelect.innerHTML = `<option value="">Lade Orte…</option>`;
     try{
-      const res=await fetch('api/submit_price_request.php',{method:'POST', headers:{'X-CSRF-Token': CSRF_TOKEN}, body:fd});
-      const data=await res.json(); if(data.ok){ alert('Danke! Wir melden uns zeitnah.'); modal.hide(); localStorage.removeItem(LS_KEY); }
-      else alert('Fehler: '+(data.error||'Unbekannt'));
-    }catch(e){ alert('Netzwerkfehler: '+e.message); }
+      const r = await fetch(`https://openplzapi.org/de/${code}`);
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      const data = await r.json();
+      if(Array.isArray(data) && data.length){
+        ortSelect.innerHTML = `<option value="">Ort wählen…</option>` + data.map(o => `<option>${(o.ort || o.place || '').toString()}</option>`).join('');
+      }else{
+        ortSelect.innerHTML = `<option value="">Keine Orte gefunden</option>`;
+      }
+    }catch(err){
+      ortSelect.innerHTML = `<option value="">Fehler – bitte manuell eingeben</option>`;
+    }
+  }
+
+  async function fetchStrassen(){
+    strasseSelect.innerHTML = `<option value="">Lade Straßen…</option>`;
+    const code = (plz.value||'').trim();
+    const ort = (ortSelect.value||'').trim();
+    if(!code || !ort){ strasseSelect.innerHTML = `<option value="">Bitte Ort wählen</option>`; return; }
+    try{
+      // Versuch 1: hypothetischer Straßen-Endpunkt
+      const r = await fetch(`https://openplzapi.org/de/${code}/${encodeURIComponent(ort)}/strassen`);
+      if(r.ok){
+        const data = await r.json();
+        if(Array.isArray(data) && data.length){
+          const opts = data.slice(0,300).map(s => `<option>${(s.strasse || s.street || s).toString()}</option>`).join('');
+          strasseSelect.innerHTML = `<option value="">Straße wählen…</option>` + opts;
+          return;
+        }
+      }
+      // Fallback: manuelle Eingabe
+      strasseSelect.innerHTML = `<option value="">Keine API-Daten – bitte manuell eingeben</option>`;
+    }catch(err){
+      strasseSelect.innerHTML = `<option value="">Straßen konnten nicht geladen werden</option>`;
+    }
+  }
+
+  plz.addEventListener('input', () => { if(plz.value.length===5) fetchOrte(); });
+  reloadOrte.addEventListener('click', fetchOrte);
+  ortSelect.addEventListener('change', fetchStrassen);
+  btnManuelleStrasse.addEventListener('click', () => {
+    const manual = document.createElement('input');
+    manual.className = 'form-control';
+    manual.placeholder = 'Straße eingeben';
+    manual.id = 'strasseInput';
+    strasseSelect.replaceWith(manual);
   });
 
-  // ---- Address logic with robust OpenPLZ queries ----
-  const adr = {
-    plz: document.getElementById('adr_plz'),
-    ort: document.getElementById('adr_ort'),
-    str: document.getElementById('adr_strasse'),
-    hnr: document.getElementById('adr_hnr'),
-    full: document.getElementById('adresse'),
-    status: document.getElementById('adr_status')
-  };
-  let adrReady=false;
-  function setStatus(html, ok=false){ if(!adr.status) return; adr.status.innerHTML=html||''; adr.status.className = ok ? 'text-success' : 'text-danger'; }
-  async function fetchLocalities(plz){ const res=await fetch(`api/openplz_localities.php?postalcode=${encodeURIComponent(plz)}`,{headers:{'X-CSRF-Token': CSRF_TOKEN}}); return res.json(); }
-  async function fetchStreets(plz, city){
-    const sel = adr.ort.tagName==='SELECT' ? adr.ort.options[adr.ort.selectedIndex] : null;
-    const locId = sel ? sel.getAttribute('data-id') : '';
-    const extra = locId ? `&localityId=${encodeURIComponent(locId)}` : '';
-    const res = await fetch(`api/openplz_streets.php?postalcode=${encodeURIComponent(plz)}&locality=${encodeURIComponent(city)}${extra}`,{headers:{'X-CSRF-Token': CSRF_TOKEN}});
-    return res.json();
+  // Objektart step
+  modalEl.querySelectorAll('input[name="typ"]').forEach(r => r.addEventListener('change', () => {
+    state.typ = r.value;
+    buildFields();
+    summaryRender();
+  }));
+
+  function makeInput(col, label, id, type='number', placeholder='', extra=''){
+    return `<div class="col-md-${col}"><label class="form-label">${label}</label><input ${extra} class="form-control" id="${id}" type="${type}" placeholder="${placeholder}"></div>`;
   }
-  function updateWeiterLock(){ if(btnWeiter && step===1) btnWeiter.disabled=!adrReady; }
-  function composeFull(){
-    if(adr.plz?.value && adr.ort?.value && adr.str?.value && adr.hnr?.value){
-      adr.full.value = `${adr.str.value} ${adr.hnr.value}, ${adr.plz.value} ${adr.ort.value}`;
-      setStatus(`<i class="bi bi-check-circle me-1"></i>${adr.full.value}`, true); adrReady=true;
-    } else { adr.full.value=''; adrReady=false; }
-    updateWeiterLock();
+  function makeSelect(col, label, id, options){
+    const opts = options.map(o => `<option>${o}</option>`).join('');
+    return `<div class="col-md-${col}"><label class="form-label">${label}</label><select class="form-select" id="${id}"><option value="">Bitte wählen</option>${opts}</select></div>`;
   }
 
-  // manual fallback helpers
-  function swapToInput(selectEl, listId, placeholder){
-    if(!selectEl || selectEl.dataset.swapped==='1') return selectEl;
-    const input=document.createElement('input'); input.type='text'; input.className='form-control'; input.placeholder=placeholder||''; input.id=selectEl.id; input.name=selectEl.name; input.required=selectEl.required; input.disabled=false;
-    const dl=document.createElement('datalist'); dl.id=listId; input.setAttribute('list', listId);
-    const opts=Array.from(selectEl.querySelectorAll('option')).map(o=>o.value||o.textContent);
-    dl.innerHTML=[...new Set(opts)].filter(Boolean).map(v=>`<option value="${v}">`).join('');
-    selectEl.after(dl); selectEl.after(input); selectEl.dataset.swapped='1'; selectEl.style.display='none';
-    return input;
-  }
-  function revertToSelect(selectEl){
-    if(!selectEl || selectEl.dataset.swapped!=='1') return;
-    const next=selectEl.nextElementSibling; const after=next?next.nextElementSibling:null;
-    if(next && next.tagName==='INPUT') next.remove(); if(after && after.tagName==='DATALIST') after.remove();
-    selectEl.dataset.swapped='0'; selectEl.style.display='';
-  }
+  function buildFields(){
+    const c = modalEl.querySelector('#fieldsContainer');
+    let html = '';
+    if(state.typ==='wohnung'){
+      html += makeInput(6,'Baujahr','baujahr','number','z. B. 1995');
+      html += makeInput(6,'Wohnfläche (m²)','flaeche','number','z. B. 85');
+      html += makeInput(6,'Etage','etage','number','z. B. 3');
+      html += makeInput(6,'Anzahl Zimmer','zimmer','number','z. B. 3');
+      html += makeInput(6,'Balkon / Terrasse (m²)','balkon','number','z. B. 6');
+      html += makeInput(6,'Garten (m²)','garten','number','z. B. 10');
+      html += makeSelect(6,'Energie-Label','energie',['A+','A','B','C','D','E','F','G']);
+      html += makeSelect(6,'Art der Wärmeerzeugung','heizung',['Fernwärme','Gas','Öl','Wärmepumpe','Strom/Elektro','Sonstiges']);
+    } else if(state.typ==='haus'){
+      html += makeSelect(6,'Subtype','subtype',['Einfamilienhaus','Doppelhaushälfte','Reihenhaus','Bungalow','Villa']);
+      html += makeSelect(6,'Transaktionstyp','tx',['Verkauf','Vermietung']);
+      html += makeInput(6,'Baujahr','baujahr','number','z. B. 1990');
+      html += makeInput(6,'Wohnfläche (m²)','flaeche','number','z. B. 140');
+      html += makeInput(6,'Grundstücksfläche (m²)','grundstueck','number','z. B. 500');
+      html += makeSelect(6,'Erbpacht','erbpacht',['Nein','Ja']);
+      html += makeSelect(6,'Energie-Label','energie',['A+','A','B','C','D','E','F','G']);
+      html += makeInput(6,'Anzahl Etagen','etagen','number');
+      html += makeInput(6,'Anzahl Zimmer','zimmer','number');
+      html += makeInput(6,'Anzahl Badezimmer','bads','number');
+      html += makeInput(6,'Balkon / Terrasse (m²)','balkon','number');
+      html += makeInput(6,'Garagenplätze','garage','number');
+      html += makeInput(6,'Außenparkplätze','parken','number');
+      html += makeSelect(6,'Art der Wärmeerzeugung','heizung',['Fernwärme','Gas','Öl','Wärmepumpe','Strom/Elektro','Sonstiges']);
+    } else { // mfh
+      html += `<h6 class="mt-2">Mehrfamilienhaus‑Spezifikation</h6>`;
+      html += makeInput(6,'Baujahr','baujahr','number','z. B. 1965');
+      html += makeInput(6,'Modernisierungsjahr','modj','number');
+      html += makeInput(6,'Anzahl Wohneinheiten','einheiten','number');
+      html += makeInput(6,'Gesamtwohnfläche (m²)','flaeche','number');
+      html += makeInput(6,'Grundstücksfläche (m²)','grundstueck','number');
+      html += makeSelect(6,'Energie-Label','energie',['A+','A','B','C','D','E','F','G']);
+      html += makeInput(6,'Jährliche Nettomieteinnahmen (EUR)','miete','number');
+    }
+    c.innerHTML = html;
 
-  if(adr.plz){
-    btnWeiter && (btnWeiter.disabled=true);
-    adr.plz.addEventListener('input', async ()=>{
-      const v=(adr.plz.value||'').replace(/\D+/g,'').slice(0,5); adr.plz.value=v;
-      revertToSelect(adr.ort); adr.ort.innerHTML='<option value="">Bitte PLZ eingeben</option>'; adr.ort.disabled=true;
-      revertToSelect(adr.str); adr.str.innerHTML='<option value="">Bitte Ort wählen</option>'; adr.str.disabled=true;
-      adr.hnr.value=''; adr.hnr.disabled=true; adrReady=false; composeFull();
-      if(v.length===5){
-        setStatus('<i class="bi bi-arrow-repeat"></i> Lade Orte …');
-        try{
-          const data=await fetchLocalities(v);
-          if(!data.ok || !data.localities?.length){
-            setStatus('<i class="bi bi-exclamation-circle"></i> Keine Orte via API – bitte Ort manuell eingeben.');
-            const input=swapToInput(adr.ort,'dl_orte','Ort eingeben'); input.disabled=false; input.addEventListener('input', ()=>{ adr.str.disabled=false; composeFull(); }); adr.ort.disabled=false; return;
-          }
-          let localityMap=new Map(); if(data.records) data.records.forEach(r=>localityMap.set(r.name, r.id||''));
-          adr.ort.innerHTML='<option value="">Ort wählen</option>' + data.localities.map(o=>{ const id=localityMap.get(o)||''; return `<option data-id="${id}">${o}</option>`; }).join('');
-          adr.ort.disabled=false; setStatus('<i class="bi bi-info-circle"></i> Ort wählen …');
-        }catch(e){ setStatus('<i class="bi bi-x-circle"></i> OpenPLZ nicht erreichbar.'); }
-      } else { setStatus(''); }
+    // bind inputs to state
+    c.querySelectorAll('input,select').forEach(inp => {
+      inp.addEventListener('input', () => {
+        state.fields[inp.id] = inp.value;
+        summaryRender();
+      });
     });
-    adr.ort.addEventListener('change', async ()=>{
-      const plz=adr.plz.value, city=adr.ort.value;
-      revertToSelect(adr.str); adr.str.innerHTML='<option value="">Bitte Ort wählen</option>'; adr.str.disabled=true;
-      adr.hnr.value=''; adr.hnr.disabled=true; adrReady=false; composeFull();
-      if(plz.length===5 && city){
-        setStatus('<i class="bi bi-arrow-repeat"></i> Lade Straßen …');
-        try{
-          const data=await fetchStreets(plz,city);
-          if(!data.ok || !data.streets?.length){
-            setStatus('<i class="bi bi-exclamation-circle"></i> Keine Straßen via API – bitte Straße manuell eingeben.');
-            const input=swapToInput(adr.str,'dl_strassen','Straße eingeben'); input.disabled=false; input.addEventListener('input', ()=>{ adr.hnr.disabled=!input.value; composeFull(); }); adr.str.disabled=false; return;
-          }
-          revertToSelect(adr.str);
-          adr.str.innerHTML='<option value="">Straße wählen</option>' + data.streets.map(s=>`<option>${s}</option>`).join('');
-          adr.str.disabled=false; setStatus('<i class="bi bi-info-circle"></i> Straße wählen …');
-        }catch(e){ setStatus('<i class="bi bi-x-circle"></i> OpenPLZ nicht erreichbar.'); }
+  }
+  buildFields();
+
+  // Next/Back/Submit
+  modalEl.querySelector('#btnBack').addEventListener('click', e => { e.preventDefault(); setStep(step-1); });
+  modalEl.querySelector('#btnNext').addEventListener('click', e => {
+    e.preventDefault();
+    if(step===0){
+      // collect address
+      const manStrasse = modalEl.querySelector('#strasseInput');
+      state.address = {
+        plz: plz.value.trim(),
+        ort: ortSelect.value.trim(),
+        strasse: manStrasse ? manStrasse.value.trim() : (strasseSelect.value || '').trim(),
+        hausnr: hausnr.value.trim()
+      };
+      if(!state.address.plz || !state.address.ort || !state.address.hausnr){
+        alert('Bitte PLZ, Ort und Hausnummer angeben.'); return;
       }
-    });
-    adr.str.addEventListener('change', ()=>{ adr.hnr.disabled=!adr.str.value; adr.hnr.focus(); composeFull(); });
-    adr.hnr.addEventListener('input', ()=>composeFull());
-  }
+    }
+    if(step===3){
+      // submit -> simulate
+      const prev = modalEl.querySelector('#summaryPreview');
+      prev.innerHTML = liveSummary.innerHTML;
+    }
+    setStep(step+1);
+  });
+
+  modalEl.addEventListener('shown.bs.modal', () => setStep(0));
+  summaryRender();
 })();

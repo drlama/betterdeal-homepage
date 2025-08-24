@@ -11,6 +11,7 @@ if (empty($_SESSION['csrf_token'])) { $_SESSION['csrf_token'] = bin2hex(random_b
 <body class="bg-white">
 <?php include 'includes/header.php'; ?>
 <div class="container py-5">
+
 <h1 class="mb-4">Datenschutzerklärung</h1>
 <p>Wir nehmen den Schutz Ihrer personenbezogenen Daten sehr ernst. Diese Seite ist ein Platzhalter
 und kann jederzeit durch Ihre finale Datenschutzerklärung ersetzt werden.</p>
@@ -20,7 +21,7 @@ und kann jederzeit durch Ihre finale Datenschutzerklärung ersetzt werden.</p>
   <li>Zwecke der Verarbeitung: Bearbeitung von Anfragen, Durchführung des BetterDeal-Services</li>
   <li>Rechtsgrundlagen: Art. 6 Abs. 1 lit. a, b, f DSGVO</li>
 </ul>
-<p>Bitte ersetzen Sie diesen Text durch Ihre Rechtsabteilung/Agentur.</p>
+
 </div>
 <?php include 'includes/footer.php'; ?>
 </body></html>

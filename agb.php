@@ -11,10 +11,10 @@ if (empty($_SESSION['csrf_token'])) { $_SESSION['csrf_token'] = bin2hex(random_b
 <body class="bg-white">
 <?php include 'includes/header.php'; ?>
 <div class="container py-5">
-<h1 class="mb-4">Allgemeine Geschäftsbedingungen</h1>
-<p>Unsere AGB gelten für alle Leistungen im Rahmen des BetterDeal-Services der PROPERTEE Real Estate GmbH. 
-Diese Seite dient als Platzhalter. Den finalen Text stellen wir Ihnen auf Wunsch zur Verfügung.</p>
-<p><a href="index.php" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Zurück</a></p>
+
+<h1 class="mb-4">Allgemeine Geschäftsbedingungen (AGB)</h1>
+<p>Platzhaltertext. Hier kommen Ihre AGB rein. Inhalt kann jederzeit ersetzt werden.</p>
+
 </div>
 <?php include 'includes/footer.php'; ?>
 </body></html>

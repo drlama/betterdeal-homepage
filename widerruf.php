@@ -11,10 +11,10 @@ if (empty($_SESSION['csrf_token'])) { $_SESSION['csrf_token'] = bin2hex(random_b
 <body class="bg-white">
 <?php include 'includes/header.php'; ?>
 <div class="container py-5">
+
 <h1 class="mb-4">Widerrufsbelehrung</h1>
-<p>Hier folgt die gesetzliche Widerrufsbelehrung und das Muster-Widerrufsformular für Verbraucher. 
-Diese Seite ist ein Platzhalter und kann mit Ihrem finalen Rechtstext ersetzt werden.</p>
-<p><a href="index.php" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Zurück</a></p>
+<p>Platzhaltertext. Hier kommt Ihre Widerrufsbelehrung rein.</p>
+
 </div>
 <?php include 'includes/footer.php'; ?>
 </body></html>
