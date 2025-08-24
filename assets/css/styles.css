@@ -9,7 +9,7 @@ html{scroll-behavior:smooth;}
 body{background:#fff;color:var(--bd-text);}
 .text-bd{color:var(--bd-primary)!important;}
 .bg-bd{background:var(--bd-primary)!important;}
-.navbar-brand img{height:60px;width:auto;display:block;}
+.navbar-brand img{height:48px;width:auto;display:block;}
 .hero{padding:3rem 0;}
 .hero-badge{display:inline-flex;gap:.5rem;align-items:center;padding:.5rem 1rem;border-radius:999px;background:#f8fafc;border:1px solid #eef2f7;color:#334155;}
 h1,h2,h3,h4,h5{letter-spacing:.2px;}
@@ -68,3 +68,27 @@ footer a:hover{text-decoration:underline;}
   background-color: #b54309;
   border-color: #b54309;
 }
+
+
+/* responsive logo sizing */
+@media (min-width: 576px){
+  .navbar-brand img{ height:60px; }
+}
+@media (min-width: 992px){
+  .navbar-brand img{ height:90px; } /* 50% größer auf Desktop */
+}
+
+/* general responsive fixes */
+.hero{ padding:2rem 0; }
+@media (min-width: 992px){
+  .hero{ padding:3.5rem 0; }
+}
+/* ensure cards have comfortable spacing on small screens */
+.card .card-body{ padding:1rem; }
+@media (min-width: 768px){
+  .card .card-body{ padding:1.25rem 1.5rem; }
+}
+
+/* fix navbar toggler icon visibility when using custom bg */
+.navbar-light .navbar-toggler{ border-color: rgba(0,0,0,.1); }
+.navbar-light .navbar-toggler-icon{ background-image: var(--bs-navbar-toggler-icon-bg); }

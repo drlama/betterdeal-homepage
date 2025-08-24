@@ -19,7 +19,7 @@ if (empty($_SESSION['csrf_token'])) { $_SESSION['csrf_token'] = bin2hex(random_b
 <header class="hero">
   <div class="container">
     <div class="row align-items-center g-4">
-      <div class="col-lg-6">
+      <div class="col-lg-6 order-1 order-lg-1">
         <div class="hero-badge mb-3"><i class="bi bi-magic"></i> Verkaufen trotz Sanierungsstau</div>
         <h1 class="display-5 fw-bold mb-3">Ihre Immobilie verkauft sich nicht?<br><span class="text-bd">Wir haben die Lösung.</span><br><span class="text-dark">Und den Käufer!</span></h1>
         <p class="lead text-muted">BetterDeal ist der Service für Eigentümer und Makler: Wir renovieren Ihr Objekt auf unsere Kosten, garantieren Ihnen einen Verkaufspreis – und Sie profitieren zusätzlich vom Mehrerlös.</p>
@@ -27,7 +27,7 @@ if (empty($_SESSION['csrf_token'])) { $_SESSION['csrf_token'] = bin2hex(random_b
           <button id="btnPreisrechnerHero2" class="btn btn-primary btn-lg"><i class="bi bi-calculator me-1"></i> Meinen Verkaufspreis ermitteln</button>
         </div>
       </div>
-      <div class="col-lg-6">
+      <div class="col-lg-6 order-2 order-lg-2">
         <div class="ratio ratio-16x9 rounded-4 border">
           <!-- YouTube-Video hier einbetten -->
           <div class="d-flex align-items-center justify-content-center text-muted">Video</div>

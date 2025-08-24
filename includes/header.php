@@ -2,7 +2,7 @@
 if (session_status() !== PHP_SESSION_ACTIVE) { session_start(); }
 if (empty($_SESSION['csrf_token'])) { $_SESSION['csrf_token'] = bin2hex(random_bytes(16)); }
 ?>
-<nav class="navbar navbar-expand-md bg-white sticky-top border-bottom">
+<nav class="navbar navbar-expand-md navbar-light bg-white sticky-top border-bottom">
   <div class="container">
     <a class="navbar-brand d-flex align-items-center" href="index.php" aria-label="BetterDeal">
       <img src="assets/img/logo.png" alt="BetterDeal">
