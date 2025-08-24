@@ -198,3 +198,20 @@ img,svg,video,canvas,iframe{max-width:100%; height:auto; display:block;}
 
 /* Section headings spacing */
 .section-title{ margin-bottom: .75rem; }
+
+
+/* === Compact mobile/tablet header (v17j) === */
+.brand-mobile{ padding-top:.25rem; padding-bottom:.25rem; }
+.brand-mobile .fw-bold{ font-size:1.05rem; letter-spacing:.2px; }
+.navbar .nav-link{ font-weight:500; }
+@media (max-width: 991.98px){
+  .navbar{ padding-top:.35rem; padding-bottom:.35rem; }
+  .navbar .nav-link{ padding:.4rem .5rem; }
+  .navbar .navbar-collapse{ margin-top:.35rem; }
+  .brand-desktop img{ height:auto; } /* ignored because desktop hidden */
+  .brand-mobile i{ line-height:1; }
+}
+/* keep desktop logo sizes from previous tuning (v17i) */
+@media (min-width: 992px){
+  .brand-desktop img{ height:72px; }
+}
