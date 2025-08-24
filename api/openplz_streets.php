@@ -29,14 +29,11 @@ function items($data) {
   if (is_array($data) && array_values($data) === $data) return $data;
   return [];
 }
-function add_street(&$arr, $val) {
-  $v = trim((string)$val);
-  if ($v !== '') $arr[$v] = true;
-}
+function add_street(&$arr, $val) { $v = trim((string)$val); if ($v !== '') $arr[$v] = true; }
+
 $streets = [];
 $base = 'https://openplzapi.org/de/';
 
-// Helper to fetch a page (or multiple) for a given query tail
 function fetch_series(&$streets, $query) {
   global $base;
   $page = 1; $limitPages = 10;
@@ -53,7 +50,6 @@ function fetch_series(&$streets, $query) {
   } while (!empty($its) && $page <= $limitPages);
 }
 
-// Strategy 1: use localityId with alphabet buckets (name=^A.* etc.)
 $letters = array_merge(range('a','z'), ['ä','ö','ü','ß', '0','1','2','3','4','5','6','7','8','9']);
 if ($locId !== '') {
   foreach ($letters as $ch) {
@@ -61,29 +57,21 @@ if ($locId !== '') {
     fetch_series($streets, $q);
   }
 }
-
-// Strategy 2: by city+plz (in case no localityId or API refuses)
 if (empty($streets)) {
   foreach ($letters as $ch) {
     $q = "Streets?locality=".urlencode($city)."&postalCode=".urlencode($plz)."&name=%5E".urlencode($ch).".*";
     fetch_series($streets, $q);
   }
 }
-
-// Strategy 3: StreetNames endpoint (if exists)
 if (empty($streets) && $locId !== '') {
   foreach ($letters as $ch) {
     $q = "StreetNames?localityId=".urlencode($locId)."&name=%5E".urlencode($ch).".*";
     fetch_series($streets, $q);
   }
 }
-
-// Strategy 4: FullText fallback
 if (empty($streets)) {
   $fts = items(call_api($base."FullTextSearch?searchTerm=".urlencode("$plz $city")));
-  foreach ($fts as $it) {
-    foreach (['street','name','label','value'] as $k) if (!empty($it[$k])) add_street($streets, $it[$k]);
-  }
+  foreach ($fts as $it) { foreach (['street','name','label','value'] as $k) if (!empty($it[$k])) add_street($streets, $it[$k]); }
 }
 
 $out = array_keys($streets); sort($out, SORT_NATURAL | SORT_FLAG_CASE);

@@ -16,14 +16,13 @@
       </div>
 
       <div class="wizard-progress px-3">
-        <div class="progress"><div id="wizardProgress" class="progress-bar" style="width: 20%"></div></div>
+        <div class="progress"><div id="wizardProgress" class="progress-bar" style="width:20%"></div></div>
       </div>
 
       <div class="wizard-body">
         <form id="preisrechnerForm" class="needs-validation" novalidate>
           <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES); ?>">
 
-          <!-- Step 1: Adresse -->
           <div class="wizard-step" data-step="1">
             <div class="row g-3">
               <div class="col-6 col-md-4">
@@ -47,17 +46,12 @@
                 <input type="text" class="form-control" name="adr_hnr" id="adr_hnr" placeholder="z. B. 12A" disabled required>
               </div>
               <div class="col-12">
-                <div class="help-row">
-                  <i class="bi bi-info-circle"></i>
-                  <div>Validierung über OpenPLZ. Sobald PLZ → Ort → Straße → Nr. gesetzt sind, geht’s weiter.</div>
-                </div>
                 <div id="adr_status" class="mt-1"></div>
                 <input type="hidden" name="adresse" id="adresse">
               </div>
             </div>
           </div>
 
-          <!-- Step 2: Objekt -->
           <div class="wizard-step d-none" data-step="2">
             <label class="form-label">Objektart</label>
             <div class="segment">
@@ -68,7 +62,6 @@
             <div class="form-text text-danger mt-2 d-none" id="objektartError">Bitte Objektart wählen.</div>
           </div>
 
-          <!-- Step 3: Basisdaten -->
           <div class="wizard-step d-none" data-step="3">
             <h6 class="mb-3" id="basisHeading">Basisdaten</h6>
             <div class="row g-3">
@@ -105,7 +98,6 @@
             </div>
           </div>
 
-          <!-- Step 4: Details -->
           <div class="wizard-step d-none" data-step="4">
             <div id="ausstattungWhgHaus">
               <h6 class="mb-3">Ausstattung</h6>
@@ -135,7 +127,6 @@
             </div>
           </div>
 
-          <!-- Step 5: Summary -->
           <div class="wizard-step d-none" data-step="5">
             <h6 class="mb-3">Zusammenfassung</h6>
             <div id="summaryList" class="list-group small mb-3"></div>

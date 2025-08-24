@@ -27,13 +27,12 @@ function extract_items($data) {
   if (is_array($data) && array_values($data) === $data) return $data;
   return [];
 }
-function candidate($rec, $keys) {
+function val($rec, $keys) {
   foreach ($keys as $k) { if (isset($rec[$k]) && $rec[$k] !== '') return (string)$rec[$k]; }
   return '';
 }
 
-$localities = [];
-$records = [];
+$localities = []; $records = [];
 $base = 'https://openplzapi.org/de/';
 $urls = [
   "Localities?postalCode=$plz",
@@ -48,18 +47,13 @@ $urls = [
 foreach ($urls as $u) {
   $items = extract_items(call_api($base.$u));
   foreach ($items as $it) {
-    $name = candidate($it, ['locality','name','city','place','value','label']);
-    $id   = candidate($it, ['id','localityId','identifier','@id']);
-    if ($name !== '') {
-      $localities[] = $name;
-      $records[] = ['name'=>$name, 'id'=>$id];
-    }
+    $name = val($it, ['locality','name','city','place','value','label']);
+    $id   = val($it, ['id','localityId','identifier','@id']);
+    if ($name !== '') { $localities[] = $name; $records[] = ['name'=>$name,'id'=>$id]; }
   }
   if (!empty($localities)) break;
 }
-
 $localities = array_values(array_unique($localities));
-// De-duplicate records by name
 $map = []; foreach ($records as $r) { $map[$r['name']] = $r['id']; }
 $records = []; foreach ($map as $n=>$i) { $records[] = ['name'=>$n,'id'=>$i]; }
 

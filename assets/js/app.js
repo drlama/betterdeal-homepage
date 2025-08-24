@@ -2,7 +2,7 @@
 (function(){
   const modalEl = document.getElementById('preisrechnerModal');
   const modal = new bootstrap.Modal(modalEl);
-  const openButtons = [document.getElementById('btnPreisrechnerHero')].filter(Boolean);
+  const openButtons = [document.getElementById('btnPreisrechnerHero'), document.getElementById('btnPreisrechnerHero2')].filter(Boolean);
   openButtons.forEach(btn => btn.addEventListener('click', () => { resetWizard(); modal.show(); }));
 
   const form = document.getElementById('preisrechnerForm');
@@ -12,7 +12,7 @@
   const wizardProgress = document.getElementById('wizardProgress');
   const objektartError = document.getElementById('objektartError');
   const basisHeading = document.getElementById('basisHeading');
-  let step = 1; const totalSteps = 5; const LS_KEY = 'bd_price_wizard';
+  let step = 1; const totalSteps = 5; const LS_KEY = 'bd_price_wizard_v16';
 
   function setStep(n){
     step=n;
@@ -34,13 +34,7 @@
     form.reset(); setStep(1);
     document.querySelectorAll('.segment .seg').forEach(c=>c.classList.remove('active'));
     objektartError && (objektartError.classList.add('d-none'));
-    toggleTypeFields();
-    try{ const cached = JSON.parse(localStorage.getItem(LS_KEY)||'{}');
-      Object.entries(cached).forEach(([k,v])=>{ const el=form.elements[k]; if(!el)return;
-        if(el.type==='radio'){ const r=form.querySelector(`input[name="${k}"][value="${v}"]`); if(r){r.checked=true; r.dispatchEvent(new Event('change'));} }
-        else { el.value=v; el.dispatchEvent(new Event('input')); }
-      });
-    }catch{}
+    toggleTypeFields(); autosave();
   }
 
   document.addEventListener('change', e=>{
@@ -97,12 +91,12 @@
     const fd=new FormData(form); fd.append('ts', new Date().toISOString());
     try{
       const res=await fetch('api/submit_price_request.php',{method:'POST', headers:{'X-CSRF-Token': CSRF_TOKEN}, body:fd});
-      const data=await res.json(); if(data.ok){ new bootstrap.Toast(document.getElementById('toastSuccess')).show(); modal.hide(); localStorage.removeItem(LS_KEY); }
+      const data=await res.json(); if(data.ok){ alert('Danke! Wir melden uns zeitnah.'); modal.hide(); localStorage.removeItem(LS_KEY); }
       else alert('Fehler: '+(data.error||'Unbekannt'));
     }catch(e){ alert('Netzwerkfehler: '+e.message); }
   });
 
-  // ---- Address logic (kept robust) ----
+  // ---- Address logic with robust OpenPLZ queries ----
   const adr = {
     plz: document.getElementById('adr_plz'),
     ort: document.getElementById('adr_ort'),
@@ -130,7 +124,7 @@
     updateWeiterLock();
   }
 
-  // manual fallback helpers (keep from earlier versions)
+  // manual fallback helpers
   function swapToInput(selectEl, listId, placeholder){
     if(!selectEl || selectEl.dataset.swapped==='1') return selectEl;
     const input=document.createElement('input'); input.type='text'; input.className='form-control'; input.placeholder=placeholder||''; input.id=selectEl.id; input.name=selectEl.name; input.required=selectEl.required; input.disabled=false;
@@ -147,7 +141,6 @@
     selectEl.dataset.swapped='0'; selectEl.style.display='';
   }
 
-  // Events
   if(adr.plz){
     btnWeiter && (btnWeiter.disabled=true);
     adr.plz.addEventListener('input', async ()=>{
