@@ -1,5 +1,5 @@
 <?php if (session_status() !== PHP_SESSION_ACTIVE) { session_start(); } ?>
-<footer>
+<footer class="mt-5">
   <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
     <div>© <?php echo date('Y'); ?> BetterDeal – Wir renovieren. Sie profitieren.</div>
     <div class="d-flex gap-3">
@@ -12,7 +12,6 @@
 </footer>
 
 <?php include __DIR__ . '/../wizard-modal.php'; ?>
-
 <script>
 const CSRF_TOKEN = "<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>";
 </script>

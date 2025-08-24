@@ -11,13 +11,12 @@ $email = trim($_POST['email'] ?? '');
 $telefon = trim($_POST['telefon'] ?? '');
 if ($name==='' || $adresse==='' || $email==='') { echo json_encode(['ok'=>false,'error'=>'Bitte alle Pflichtfelder ausfüllen.']); exit; }
 
-// Save CSV
 $fields = ['ts'=>date('c'),'name'=>$name,'adresse'=>$adresse,'email'=>$email,'telefon'=>$telefon,'ip'=>($_SERVER['REMOTE_ADDR'] ?? '')];
 $path = __DIR__ . '/../storage/makler_registrierungen.csv';
 $isNew = !file_exists($path);
 $fh = fopen($path, 'a'); if ($isNew) { fputcsv($fh, array_keys($fields)); } fputcsv($fh, array_values($fields)); fclose($fh);
 
-// Try to send an email (adjust recipient as needed)
+// Email
 $to = 'info@propertee.de';
 $subject = 'Neue Makler-Registrierung (BetterDeal)';
 $body = "Neue Registrierung:\n\nName/Firma: $name\nAdresse: $adresse\nE-Mail: $email\nTelefon: $telefon\n";

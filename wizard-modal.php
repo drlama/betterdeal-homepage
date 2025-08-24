@@ -1,6 +1,4 @@
-<?php
-// BetterDeal Preisrechner (Wizard) – Bootstrap Modal
-?>
+<?php // BetterDeal Preisrechner Modal ?>
 <div class="modal fade" id="preisrechnerModal" tabindex="-1" aria-labelledby="preisrechnerLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
     <div class="modal-content">
@@ -11,7 +9,6 @@
       <div class="modal-body">
         <div class="d-lg-flex gap-4">
           <div class="flex-grow-1">
-            <!-- Steps nav -->
             <ol class="wizard-steps mb-3">
               <li class="active"><span>Adresse</span></li>
               <li><span>Objektart</span></li>
@@ -20,7 +17,6 @@
               <li><span>Zusammenfassung</span></li>
             </ol>
 
-            <!-- Step 1: Adresse -->
             <form id="step1" class="wizard-step needs-validation" novalidate>
               <div class="row g-3">
                 <div class="col-6 col-md-4">
@@ -55,7 +51,6 @@
               </div>
             </form>
 
-            <!-- Step 2: Objektart -->
             <form id="step2" class="wizard-step d-none">
               <div class="row g-3">
                 <div class="col-md-4">
@@ -73,12 +68,7 @@
               </div>
             </form>
 
-            <!-- Step 3: Basisdaten (conditional fields) -->
-            <form id="step3" class="wizard-step d-none">
-              <div id="fieldsContainer" class="row g-3"></div>
-            </form>
-
-            <!-- Step 4: Details -->
+            <form id="step3" class="wizard-step d-none"><div id="fieldsContainer" class="row g-3"></div></form>
             <form id="step4" class="wizard-step d-none">
               <div class="row g-3">
                 <div class="col-md-6">
@@ -94,11 +84,10 @@
               </div>
             </form>
 
-            <!-- Step 5: Zusammenfassung -->
             <div id="step5" class="wizard-step d-none">
               <div class="alert alert-light border">
                 <h6 class="mb-2">Vielen Dank! Wir melden uns kurzfristig mit einer Ersteinschätzung.</h6>
-                <div id="summaryPreview" class="small text-muted"></div>
+                <dl class="row small mb-0" id="summaryPreview"></dl>
               </div>
             </div>
 
@@ -110,8 +99,6 @@
               </div>
             </div>
           </div>
-
-          <!-- Right rail summary -->
           <aside class="d-none d-lg-block" style="width:320px;">
             <div class="card shadow-sm border-0">
               <div class="card-body">
