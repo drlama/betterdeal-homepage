@@ -134,4 +134,5 @@
     <div class="col-md-4"><div class="card h-100 border-0 shadow-sm card-hover"><div class="card-body"><i class="bi bi-tools fs-3 text-bd mb-2 d-block"></i><h5>Vor Ort & Umsetzung</h5><p>Besichtigungen & Koordination der Handwerker vor Ort.</p></div></div></div>
   </div></div></section>
 <section class="bd-bottom-band"></section>
+<?php include __DIR__.'/wizard-modal.php'; ?>
 <?php include 'includes/footer.php'; ?></body></html>
