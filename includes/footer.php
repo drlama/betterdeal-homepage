@@ -20,15 +20,15 @@
           <ul class="footer-links">
             <li><a href="#kalkulation">Verkaufspreis ermitteln</a></li>
             <li><a href="#ablauf">Ablauf</a></li>
-            <li><a href="#faq">FAQ</a></li>
+            <li><a href="/faq.php">FAQ</a></li>
           </ul>
         </div>
 
         <div class="col-6 col-md-3">
           <h6 class="footer-title">Unternehmen</h6>
           <ul class="footer-links">
-            <li><a href="#about">Über uns</a></li>
-            <li><a href="#kontakt">Kontakt</a></li>
+            <li><a href="/ueber-uns.php">Über uns</a></li>
+            <li><a href="/kontakt.php">Kontakt</a></li>
             <li><a href="#karriere">Karriere</a></li>
           </ul>
         </div>
