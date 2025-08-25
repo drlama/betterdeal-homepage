@@ -1,17 +1,4 @@
 
-<!-- CTA band -->
-<section class="bd-cta-band text-white text-center py-5">
-  <div class="container">
-    <h2 class="fw-bold display-6 mb-2">Bereit für Ihren BetterDeal?</h2>
-    <p class="lead mb-4 opacity-90">Ermitteln Sie jetzt kostenlos Ihren garantierten Verkaufspreis</p>
-    <button type="button" class="btn btn-light btn-lg px-4"
-            data-bs-toggle="modal" data-bs-target="#preisrechnerModal">
-      <i class="bi bi-calculator me-2"></i>Jetzt Verkaufspreis berechnen
-    </button>
-  </div>
-</section>
-
-<!-- Dark footer -->
 <footer class="bd-footer text-light pt-5 pb-4">
   <div class="container">
     <div class="row g-4">
@@ -20,7 +7,9 @@
           <div class="footer-logo-icon"><i class="fas fa-home"></i></div>
           <span class="fs-5 fw-semibold">BetterDeal</span>
         </div>
-        <p class="text-white-50 mb-0">Ihr Partner für erfolgreiche Immobilienverkäufe mit Mehrwert.</p>
+        <p class="text-white-50 mb-0">
+          Ihr Partner für erfolgreiche Immobilienverkäufe mit Mehrwert.
+        </p>
       </div>
 
       <div class="col-6 col-md-2">
@@ -59,6 +48,5 @@
   </div>
 </footer>
 
-<!-- Scripts -->
+<!-- Bootstrap Bundle (am Ende, einmalig) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-<script src="assets/js/app.js"></script>
