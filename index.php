@@ -10,7 +10,7 @@
   <span class="badge text-bg-light rounded-pill mb-3"><i class="bi bi-stars me-1"></i> Verkaufen trotz Sanierungsstau</span>
   <h1 class="display-5 fw-bold mb-3">Ihre Immobilie verkauft sich nicht?<br><span class="text-bd">Wir haben die Lösung.</span><br><span class="text-dark">Und den Käufer!</span></h1>
   <p class="lead text-muted">BetterDeal: Wir renovieren auf unsere Kosten, garantieren einen Verkaufspreis – und Sie profitieren zusätzlich vom Mehrerlös.</p>
-  <button id="btnPreisrechnerHero2" type="button" class="btn btn-primary btn-lg mt-2" data-bs-toggle="modal" data-bs-target="#preisrechnerModal"><i class="bi bi-calculator me-1"></i> Meinen Verkaufspreis ermitteln</button>
+  <button id="btnPreisrechnerHero2" type="button" class="btn btn-primary btn-lg mt-2" data-bs-toggle="modal" data-bs-target="#preisrechnerModal" data-bs-toggle="modal" data-bs-target="#preisrechnerModal"><i class="bi bi-calculator me-1"></i> Meinen Verkaufspreis ermitteln</button>
 </div>
 <div class="col-lg-6"><div class="ratio ratio-16x9 rounded-4 border d-flex align-items-center justify-content-center text-muted"><span>Video</span></div></div>
 </div></div></section>
