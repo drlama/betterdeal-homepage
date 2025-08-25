@@ -14,20 +14,116 @@
 </div>
 <div class="col-lg-6"><div class="ratio ratio-16x9 rounded-4 border d-flex align-items-center justify-content-center text-muted"><span>Video</span></div></div>
 </div></div></section>
-<section id="warum" class="py-4"><div class="container text-center">
-  <div class="section-kicker">Warum</div><h2 class="section-title">Warum <span class="brand-underline">BetterDeal</span>?</h2><p class="text-muted mb-4">Maximaler Verkaufserlös ohne Aufwand</p>
-  <div class="row g-4 section-cards text-start">
-    <div class="col-md-4"><div class="card h-100 shadow-sm border-0 card-hover"><div class="card-body"><i class="bi bi-shield-lock fs-3 text-bd mb-2 d-block"></i><h5>Garantierter Verkaufspreis</h5><p>Preisrechner → garantierter Verkaufspreis. Sicher – ohne Risiko.</p></div></div></div>
-    <div class="col-md-4"><div class="card h-100 shadow-sm border-0 card-hover"><div class="card-body"><i class="bi bi-tools fs-3 text-bd mb-2 d-block"></i><h5>Renovierung auf unsere Kosten</h5><p>Wir modernisieren komplett auf unsere Kosten. Vermarktung topmodern.</p></div></div></div>
-    <div class="col-md-4"><div class="card h-100 shadow-sm border-0 card-hover"><div class="card-body"><i class="bi bi-graph-up-arrow fs-3 text-bd mb-2 d-block"></i><h5>Verkauf mit Bonus</h5><p>Mehrerlös durch Sanierung → zusätzlicher Bonus (abhängig von Kosten).</p></div></div></div>
-  </div></div></section>
-<section id="funktioniert" class="py-5"><div class="container text-center">
-  <div class="section-kicker">Ablauf</div><h2 class="section-title">So funktioniert <span class="brand-underline">BetterDeal</span></h2><p class="text-muted mb-4">In drei Schritten</p>
-  <div class="row g-4 section-cards text-start">
-    <div class="col-md-4"><div class="card h-100 border-0 shadow-sm card-hover"><div class="card-body"><i class="bi bi-shield fs-3 text-bd mb-2 d-block"></i><h5>1) Garantierter Verkaufspreis</h5><p>Daten eingeben → sofortiger garantierter Verkaufspreis.</p></div></div></div>
-    <div class="col-md-4"><div class="card h-100 border-0 shadow-sm card-hover"><div class="card-body"><i class="bi bi-tools fs-3 text-bd mb-2 d-block"></i><h5>2) Renovierung</h5><p>Wir bereiten den Verkauf transparent & effizient vor.</p></div></div></div>
-    <div class="col-md-4"><div class="card h-100 border-0 shadow-sm card-hover"><div class="card-body"><i class="bi bi-graph-up-arrow fs-3 text-bd mb-2 d-block"></i><h5>3) Verkauf & Bonus</h5><p>Bestmöglicher Preis – Bonus aus dem Mehrerlös.</p></div></div></div>
-  </div></div></section>
+<section id="warum" class="py-5 bg-white">
+        <div class="container">
+            <div class="text-center mb-5">
+                <span class="badge bg-light text-primary border border-primary mb-3">WARUM</span>
+                <h2 class="display-5 fw-bold mb-4">
+                    Warum <span class="text-primary">BetterDeal</span>?
+                </h2>
+                <p class="lead text-muted">Maximaler Verkaufserlös ohne Aufwand</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm feature-card">
+                        <div class="card-body text-center p-5">
+                            <div class="feature-icon mx-auto mb-4">
+                                <i class="fas fa-shield-alt text-white"></i>
+                            </div>
+                            <h3 class="h4 fw-semibold mb-3">Garantierter Verkaufspreis</h3>
+                            <p class="text-muted">
+                                Preisrechner → garantierter Verkaufspreis. Sicher – ohne Risiko.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm feature-card">
+                        <div class="card-body text-center p-5">
+                            <div class="feature-icon mx-auto mb-4">
+                                <i class="fas fa-home text-white"></i>
+                            </div>
+                            <h3 class="h4 fw-semibold mb-3">Renovierung auf unsere Kosten</h3>
+                            <p class="text-muted">
+                                Wir modernisieren komplett auf unsere Kosten. Vermarktung topmodern.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm feature-card">
+                        <div class="card-body text-center p-5">
+                            <div class="feature-icon mx-auto mb-4">
+                                <i class="fas fa-chart-line text-white"></i>
+                            </div>
+                            <h3 class="h4 fw-semibold mb-3">Verkauf mit Bonus</h3>
+                            <p class="text-muted">
+                                Mehrerlös durch Sanierung → zusätzlicher Bonus (abhängig von Kosten).
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<section id="funktioniert" class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <span class="badge bg-white text-primary border border-primary mb-3">ABLAUF</span>
+                <h2 class="display-5 fw-bold mb-4">
+                    So funktioniert <span class="text-primary">BetterDeal</span>
+                </h2>
+                <p class="lead text-muted">In drei Schritten</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm step-card">
+                        <div class="card-body p-5">
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="step-number me-3">1</div>
+                                <h3 class="h5 fw-semibold mb-0">Garantierter Verkaufspreis</h3>
+                            </div>
+                            <p class="text-muted">
+                                Daten eingeben → sofortiger garantierter Verkaufspreis.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm step-card">
+                        <div class="card-body p-5">
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="step-number me-3">2</div>
+                                <h3 class="h5 fw-semibold mb-0">Renovierung</h3>
+                            </div>
+                            <p class="text-muted">
+                                Wir bereiten den Verkauf transparent & effizient vor.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm step-card">
+                        <div class="card-body p-5">
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="step-number me-3">3</div>
+                                <h3 class="h5 fw-semibold mb-0">Verkauf & Bonus</h3>
+                            </div>
+                            <p class="text-muted">
+                                Bestmöglicher Preis – Bonus aus dem Mehrerlös.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 <?php include __DIR__.'/sections/kalkulation.php'; ?>
 <section id="nur-mit-makler" class="py-5"><div class="container text-center">
   <h2 class="section-title"><span class="brand-underline">BetterDeal</span> – nur mit Makler</h2>
@@ -50,4 +146,6 @@
     <div class="text-muted small mt-2">Antwort innerhalb von 24 Stunden</div>
   </div></div></div></div>
 </div></section>
+
+<section class="bd-bottom-band"></section>
 <?php include 'includes/footer.php'; ?></body></html>
