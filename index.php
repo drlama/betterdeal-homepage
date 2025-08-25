@@ -133,19 +133,5 @@
     <div class="col-md-4"><div class="card h-100 border-0 shadow-sm card-hover"><div class="card-body"><i class="bi bi-file-earmark-text fs-3 text-bd mb-2 d-block"></i><h5>Verträge & Begleitung</h5><p>Der Makler bespricht Verträge und begleitet Sie sicher.</p></div></div></div>
     <div class="col-md-4"><div class="card h-100 border-0 shadow-sm card-hover"><div class="card-body"><i class="bi bi-tools fs-3 text-bd mb-2 d-block"></i><h5>Vor Ort & Umsetzung</h5><p>Besichtigungen & Koordination der Handwerker vor Ort.</p></div></div></div>
   </div></div></section>
-<section id="kontakt" class="py-5"><div class="container"><h2 class="section-title mb-3">Kontakt aufnehmen</h2>
-  <div class="row g-4"><div class="col-lg-7"><form class="row g-3">
-    <div class="col-md-6"><label class="form-label">Vorname</label><input class="form-control"></div>
-    <div class="col-md-6"><label class="form-label">Nachname</label><input class="form-control"></div>
-    <div class="col-12"><label class="form-label">E-Mail</label><input type="email" class="form-control"></div>
-    <div class="col-12"><label class="form-label">Nachricht</label><textarea class="form-control" rows="5"></textarea></div>
-    <div class="col-12"><button class="btn btn-primary">Nachricht senden</button></div>
-  </form></div><div class="col-lg-5"><div class="card border-0 shadow-sm"><div class="card-body">
-    <h5 class="mb-2">PROPERTEE Real Estate GmbH</h5><div>Bombardierstraße 7, 82031 Grünwald</div>
-    <div class="mt-2"><i class="bi bi-telephone me-2"></i>+49 (0) 89 945 089 56-0</div><div><i class="bi bi-envelope me-2"></i>info@propertee.de</div>
-    <div class="text-muted small mt-2">Antwort innerhalb von 24 Stunden</div>
-  </div></div></div></div>
-</div></section>
-
 <section class="bd-bottom-band"></section>
 <?php include 'includes/footer.php'; ?></body></html>

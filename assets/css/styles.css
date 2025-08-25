@@ -75,3 +75,24 @@
     .calculation-result { flex-direction:column; text-align:center; gap:1rem; }
     .calculation-row { flex-direction:column; text-align:center; gap:.5rem; }
 }
+
+
+/* === CTA Band + Footer === */
+:root{
+  --bd-orange:#FF6B35;
+  --bd-orange-2:#FF8A5C;
+  --bd-orange-3:#E55A2B;
+}
+.bd-cta-band{
+  background: linear-gradient(135deg, var(--bd-orange) 0%, var(--bd-orange-2) 50%, var(--bd-orange-3) 100%);
+}
+.bd-footer{
+  background:#0f172a;
+}
+.bd-footer a:hover{ text-decoration: underline; }
+.footer-logo-icon{
+  width:48px;height:48px;border-radius:14px;
+  display:grid;place-items:center;
+  background: linear-gradient(135deg, var(--bd-orange) 0%, var(--bd-orange-2) 50%, var(--bd-orange-3) 100%);
+  color:#fff;font-size:1.25rem;
+}
