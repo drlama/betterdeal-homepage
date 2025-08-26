@@ -19,9 +19,21 @@
           <i class="bi bi-calculator"></i> Meinen Verkaufspreis ermitteln
         </button>
       </div>
+
+      <!-- Hero Video (Click-to-Play, DSGVO-freundlich) -->
       <div class="col-lg-6">
-        <div class="video-placeholder rounded-3 d-flex align-items-center justify-content-center">
-          <span class="text-secondary">Video</span>
+        <div class="ratio ratio-16x9 video-wrapper rounded-3 shadow-sm"
+             data-ytid="A_O5oMTj1P0" data-title="BetterDeal – Erklärvideo">
+          <!-- Poster -->
+          <img class="video-poster" src="https://i.ytimg.com/vi/A_O5oMTj1P0/hqdefault.jpg"
+               alt="BetterDeal Video Vorschaubild">
+          <!-- Play Button Overlay -->
+          <button class="video-play" aria-label="Video abspielen">
+            <svg viewBox="0 0 68 48" width="68" height="48" aria-hidden="true">
+              <path d="M66.52 7.74a8 8 0 0 0-5.63-5.66C56.6 1 34 1 34 1s-22.6 0-26.9 1.08A8 8 0 0 0 1.48 7.74 83.2 83.2 0 0 0 0 24a83.2 83.2 0 0 0 1.48 16.26 8 8 0 0 0 5.63 5.66C11.4 47 34 47 34 47s22.6 0 26.9-1.08a8 8 0 0 0 5.63-5.66A83.2 83.2 0 0 0 68 24a83.2 83.2 0 0 0-1.48-16.26Z" fill="#f00"/>
+              <path d="M45 24 27 14v20l18-10z" fill="#fff"/>
+            </svg>
+          </button>
         </div>
       </div>
     </div>
@@ -144,7 +156,7 @@
   </section>
 </main>
 
-<!-- Preisrechner Modal (funktionierend) -->
+<!-- Preisrechner Modal -->
 <div class="modal fade" id="preisrechnerModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content">
@@ -180,7 +192,7 @@
           </div>
           <div class="col-lg-4">
             <div class="summary card-soft">
-              <h6 class="mb-3"><i class="bi bi-clipboard2-check me-1"></i> Live‑Zusammenfassung</h6>
+              <h6 class="mb-3"><i class="bi bi-clipboard2-check me-1"></i> Live-Zusammenfassung</h6>
               <ul class="list-unstyled small">
                 <li class="d-flex justify-content-between border-bottom py-2"><span class="text-secondary">Adresse</span><span>–</span></li>
                 <li class="d-flex justify-content-between border-bottom py-2"><span class="text-secondary">Objektart</span><span>–</span></li>
@@ -201,3 +213,32 @@
 </div>
 
 <?php include __DIR__.'/includes/footer.php'; ?>
+
+<!-- === Video Click-to-Play: Styles & Script (lokal, damit self-contained) === -->
+<style>
+  .video-wrapper{position:relative;background:#000;overflow:hidden}
+  .video-poster{width:100%;height:100%;object-fit:cover;display:block}
+  .video-play{position:absolute;inset:0;display:grid;place-items:center;background:radial-gradient(rgba(0,0,0,.35),rgba(0,0,0,.55));border:0;cursor:pointer;transition:transform .15s ease}
+  .video-play svg{filter:drop-shadow(0 6px 16px rgba(0,0,0,.4))}
+  .video-play:hover{transform:scale(1.02)}
+  .video-wrapper iframe{border:0;width:100%;height:100%}
+</style>
+<script>
+  document.querySelectorAll('.video-wrapper').forEach(wrap => {
+    const id = wrap.dataset.ytid;
+    const title = wrap.dataset.title || 'Video';
+    function play(){
+      const src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1`;
+      const ifr = document.createElement('iframe');
+      ifr.src = src;
+      ifr.title = title;
+      ifr.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+      ifr.allowFullscreen = true;
+      wrap.innerHTML = '';
+      wrap.appendChild(ifr);
+    }
+    wrap.addEventListener('click', e => {
+      if (e.target.closest('.video-play') || e.target.classList.contains('video-poster')) play();
+    });
+  });
+</script>
